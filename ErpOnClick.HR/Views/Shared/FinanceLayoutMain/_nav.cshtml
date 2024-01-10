@@ -1,0 +1,151 @@
+﻿@using ErpOnClick.ErpMain.Resources
+
+@inject LocService SharedLocalizer
+
+@{
+    string _baseUrl = Convert.ToString(ViewData["baseUrl"]);
+}
+
+@inject LocService SharedLocalizer
+
+
+
+<ul id="js-nav-menu" class="nav-menu">
+    <li class="active">
+        <a href="~/Finance/FinanceDashBoard" title="Category" data-filter-tags="category">
+            <i class="fal fa-tachometer-alt"></i>
+            <span class="nav-link-text" data-i18n="nav.hr"> @SharedLocalizer.GetLocalizedHtmlString("Dashboard")</span>
+        </a>
+    </li>
+    <li>
+        <a href="#" title="Category" data-filter-tags="category">
+            <i class="fal fa-receipt"></i>
+            <span class="nav-link-text" data-i18n="nav.hr"> @SharedLocalizer.GetLocalizedHtmlString("A/c Receivables")</span>
+        </a>
+        <ul>
+
+            <li><a href="~/Finance/Customers" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Customers")</span></a></li>
+            <li><a href="~/Finance/Invoice" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Invoices")</span></a></li>
+            <li><a href="~/Finance/Receipts" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Receipts")</span></a></li>
+            <li><a href="~/Finance/CreditNotes" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Credit Notes")</span></a></li>
+        </ul>
+    </li>
+
+    <li>
+        <a href="#" title="Category" data-filter-tags="category">
+            <i class="fal fa-file-invoice"></i>
+            <span class="nav-link-text" data-i18n="nav.hr"> @SharedLocalizer.GetLocalizedHtmlString("A/c Payables")</span>
+        </a>
+        <ul>
+
+            <li><a href="~/Finance/Vendors" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Vendors")</span></a></li>
+            <li><a href="~/Finance/Bills" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Bills")</span></a></li>
+            <li><a href="~/Finance/payments" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Payments")</span></a></li>
+            <li><a href="~/Finance/Refunds" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Refunds")</span></a></li>
+        </ul>
+    </li>
+
+
+    <li>
+        <a href="#" title="Category" data-filter-tags="category">
+            <i class="fal fa-money-bill"></i>
+            <span class="nav-link-text" data-i18n="nav.hr"> @SharedLocalizer.GetLocalizedHtmlString("Accounting")</span>
+        </a>
+        <ul>
+
+            <li><a href="~/Finance/AccountTypes" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Account Types")</span></a></li>
+            <li><a href="~/Finance/AccountGroups" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Account Groups")</span></a></li>
+            <li><a href="~/Finance/Accounts" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Accounts")</span></a></li>
+            <li><a href="~/Finance/ChartOfAccounts" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Chart Of Accounts")</span></a></li>
+            <li><a href="~/Finance/Vouchers" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("General Entries")</span></a></li>
+            <li><a href="~/Finance/FixedAsset" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Fixed Asset")</span></a></li>
+            <li><a href="~/Finance/Banks" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Banks")</span></a></li>
+
+        </ul>
+    </li>
+
+
+    <li>
+        <a href="#" title="Category" data-filter-tags="category">
+            <i class="fal fa-chart-bar"></i>
+            <span class="nav-link-text" data-i18n="nav.hr"> @SharedLocalizer.GetLocalizedHtmlString("Reports")</span>
+        </a>
+        <ul>
+
+            <li><a href="~/Finance/TrailReport" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Trail Balance")</span></a></li>
+            <li><a href="~/Finance/AccountLedger" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Account Ledger")</span></a></li>
+            <li><a href="~/Finance/CustomerLedgerReport" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Customer Ledger Report")</span></a></li>
+            <li><a href="~/Finance/VendorLedgerReport" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Vendor Ledger Report")</span></a></li>
+        </ul>
+    </li>
+
+    <li>
+        <a href="#" title="Category" data-filter-tags="category">
+            <i class="fal fa-file-contract"></i>
+            <span class="nav-link-text" data-i18n="nav.hr"> @SharedLocalizer.GetLocalizedHtmlString("Statements")</span>
+        </a>
+        <ul>
+
+            <li><a href="~/Finance/ProfitLoss" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Statement of Profit & Loss")</span></a></li>
+            <li><a href="~/Finance/FinancialPosition" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Statement of Financial Position")</span></a></li>
+            <li><a href="~/Finance/OtherComprehensiveIncome" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Statement of Other Comprehensive Income")</span></a></li>
+            <li><a href="~/Finance/ChangesInEquity" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Statement of Changes in Equity")</span></a></li>
+            <li><a href="~/Finance/CashFlow" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Statement of Cash Flow")</span></a></li>
+        </ul>
+    </li>
+    <li>
+        <a href="#" title="Category" data-filter-tags="category">
+            <i class="fal fa-cog"></i>
+            <span class="nav-link-text" data-i18n="nav.hr"> @SharedLocalizer.GetLocalizedHtmlString("Setup")</span>
+        </a>
+        <ul>
+
+            <li><a href="~/Finance/FinancialYear/edit" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Financial Year")</span></a></li>
+            <li><a href="~/Finance/ReportSettings/edit" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Report Settings")</span></a></li>
+            <li><a href="~/Finance/COASettings" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("COA Settings")</span></a></li>
+            
+        </ul>
+    </li>
+
+
+    <li class="active">
+        <a href="~/home/Index" title="Category" data-filter-tags="category">
+            <i class="fal fa-arrow-left"></i>
+            <span class="nav-link-text" data-i18n="nav.hr"> @SharedLocalizer.GetLocalizedHtmlString("Return")</span>
+        </a>
+    </li>
+
+    <li class="active ">
+        <a href="~/home/logout" title="Category" data-filter-tags="category">
+            <i class=" fal fa-sign-out"></i>
+            <span class="nav-link-text" data-i18n="nav.category">  @SharedLocalizer.GetLocalizedHtmlString("Logout")</span>
+        </a>
+    </li>
+
+</ul>
+
+
+
+
+
+<!-- Example of open and active states -->
+@*<li class="active ">
+        <a href="#" title="Category" data-filter-tags="category">
+            <i class="fal fa-plus"></i>
+            <span class="nav-link-text" data-i18n="nav.category">Open Item</span>
+        </a>
+        <ul>
+            <li class="active open">
+                <a href="javascript:void(0);" title="Menu child" data-filter-tags="utilities menu child">
+                    <span class="nav-link-text" data-i18n="nav.utilities_menu_child">Open Sub-category</span>
+                </a>
+                <ul>
+                    <li class="active">
+                        <a href="javascript:void(0);" title="Sublevel Item" data-filter-tags="utilities menu child sublevel item">
+                            <span class="nav-link-text" data-i18n="nav.utilities_menu_child_sublevel_item">Active Item</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </li>*@

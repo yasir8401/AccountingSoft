@@ -1,0 +1,185 @@
+﻿@using ErpOnClick.ErpMain.Models
+@using ErpOnClick.ErpMain.Resources
+@inject LocService SharedLocalizer
+
+@{
+    ApprovalRouteDetailViewModel InboxList = Model.ApprovalRouteDetailViewModel;
+}
+<input type="hidden" id="routeDetailId" name="routeDetailId" value="@InboxList.Route.RouteDetailId" />
+<div class="row">
+    <div class="col-sm-6">
+
+        <div style="font-weight: 900; font-size: 18px; color: #2b4c81 !important; border-bottom: 3px solid #ddd !important;">@InboxList.ApprovalTasks.ApprovalTaskNameEn</div>
+        <table class="table table-sm table-bordered table-striped" style="border-top:5px solid grey;">
+            <tr>
+                <td>@SharedLocalizer.GetLocalizedHtmlString("TaskId / Code")</td>
+                <td>@InboxList.ApprovalTasks.ApprovalTaskId / @InboxList.ApprovalTasks.ApprovalTaskCode</td>
+            </tr>
+            <tr>
+                <td>@SharedLocalizer.GetLocalizedHtmlString("TaskId Date")</td>
+                <td>@(InboxList.ApprovalTasks.CreatedDate != null ? Convert.ToDateTime(InboxList.ApprovalTasks.CreatedDate).ToString("dd-MMM-yyyy") : "")</td>
+            </tr>
+            <tr>
+                <td>@SharedLocalizer.GetLocalizedHtmlString("Task In English")</td>
+                <td>@InboxList.ApprovalTasks.ApprovalTaskNameEn</td>
+            </tr>
+            <tr>
+                <td>@SharedLocalizer.GetLocalizedHtmlString("Task In Arabic")</td>
+                <td>@InboxList.ApprovalTasks.ApprovalTaskNameAr</td>
+            </tr>
+            <tr>
+                <td>@SharedLocalizer.GetLocalizedHtmlString("Task Description Eng")</td>
+                <td>@InboxList.ApprovalTasks.ApprovalTaskDescriptionEn</td>
+            </tr>
+            <tr>
+                <td>@SharedLocalizer.GetLocalizedHtmlString("Task Description Arb")</td>
+                <td>@InboxList.ApprovalTasks.ApprovalTaskDescriptionAr</td>
+            </tr>
+            <tr>
+                <td>@SharedLocalizer.GetLocalizedHtmlString("Requested By")</td>
+                <td>@InboxList.RequestedBy</td>
+            </tr>
+            <tr>
+                <td>@SharedLocalizer.GetLocalizedHtmlString("Status")</td>
+                <td>
+                    @if (InboxList.Status == "Pending")
+                    {
+                        <label class='text-warning right pl-3'><i class='fal fa-spinner fa-spin mr-2'></i>@InboxList.Status</label>
+                    }
+                    else if (InboxList.Status == "Rejected")
+                    {
+                        <label class='text-danger right pl-3'><i class='fal fa-times mr-2'></i>@InboxList.Status</label>
+                    }
+                    else
+                    {
+                        <label class='text-success right pl-3'><i class='fal fa-check mr-2'></i>@InboxList.Status</label>
+                    }
+
+                </td>
+            </tr>
+
+
+        </table>
+    </div>
+    <div class="col-sm-6">
+
+        <div style="font-weight: 900; font-size: 18px; color: #2b4c81 !important; border-bottom: 3px solid #ddd !important;">Approvers</div>
+        @{
+            foreach (var user in InboxList.ApproverUsersList)
+            {
+                <div class="row">
+                    <div class="col-sm-2">
+                        <img style="width: 36px; height: 36px" id="profilePic" class="" src="~/adminlte/dist/img/noimage.jpg">
+                    </div>
+                    <div class="col-sm-10" style="border-bottom: 0.5px solid #ddd">
+                        <div class="row">
+                            <div class="col-sm-6" style="font-weight:900">@user.UserName</div>
+                            <div class="col-sm-6 pull-right text-right" style="font-weight: 900;">
+                                @if (user.Status == "Pending")
+                                {
+                                    <label class='text-warning right pl-3'><i class='fal fa-spinner fa-spin mr-2'></i>@user.Status</label>
+                                }
+                                else if (user.Status == "Rejected")
+                                {
+                                    <label class='text-danger right pl-3'><i class='fal fa-times mr-2'></i>@user.Status</label>
+                                }
+                                else
+                                {
+                                    <label class='text-success right pl-3'><i class='fal fa-check mr-2'></i>@user.Status</label>
+                                }
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6" style="color:lightgray">@user.RoleName</div>
+                            <div class="col-sm-6  text-right">
+                                @(user.ActionDate != null ? Convert.ToDateTime(user.ActionDate).ToString("dd-MMM-yyyy") : "")
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6" style="color: lightgray">@user.Email</div>
+                            
+
+                        </div>
+                    </div>
+
+                </div>
+            }
+        }
+
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <table class="table table-sm table-bordered table-striped" style="border-top:5px solid grey;">
+            <tr>
+                <td>@SharedLocalizer.GetLocalizedHtmlString("Record Name")</td>
+                <td>@InboxList.Route.RecordName</td>
+            </tr>
+            <tr>
+                <td>@SharedLocalizer.GetLocalizedHtmlString("Record Notes")</td>
+                <td>@InboxList.Route.RecordNotes</td>
+            </tr>
+            <tr>
+                <td>@SharedLocalizer.GetLocalizedHtmlString("Action Date")</td>
+                <td>@(InboxList.Route.ActionDate!= null ? Convert.ToDateTime(InboxList.Route.ActionDate).ToString("dd-MMM-yyyy") : "")</td>
+            </tr>
+            <tr>
+                <td>@SharedLocalizer.GetLocalizedHtmlString("Approver Notes")</td>
+                <td>@InboxList.Route.ApproverNotes</td>
+            </tr>
+            @*<tr>
+                <td>Approval Status</td>
+                <td>
+                    @if (InboxList.Route.ApprovalStatus == "Pending")
+                    {
+                        <label class='text-warning right pl-3'><i class='fal fa-spinner fa-spin mr-2'></i>@InboxList.Route.ApprovalStatus</label>
+                    }
+                    else if (InboxList.Route.ApprovalStatus == "Rejected")
+                    {
+                        <label class='text-danger right pl-3'><i class='fal fa-times mr-2'></i>@InboxList.Route.ApprovalStatus</label>
+                    }
+                    else
+                    {
+                        <label class='text-success right pl-3'><i class='fal fa-check mr-2'></i>@InboxList.Route.ApprovalStatus</label>
+                    }
+                </td>
+            </tr>*@
+
+
+
+        </table>
+    </div>
+    <div class="col-sm-6">
+        <label>@SharedLocalizer.GetLocalizedHtmlString("Status")</label>
+        <select name="Status" id="Status" class='form-control'>
+            <option value='007001'>Pending</option>
+            <option value='007002'>Approved</option>
+            <option value='007003'>Rejected</option>
+        </select>
+        <label>@SharedLocalizer.GetLocalizedHtmlString("Comments")</label>
+        <textarea id='APPROVER_NOTES' name='APPROVER_NOTES' class='form-control border-0' style='background-color: whitesmoke;width: 100%;' borderrows=6 placeholder='Enter your comments here ...'></textarea>
+        <div class='clearfix margin-5'></div>
+        <hr>
+        <button type='button' id="btnUpdateTaskStatus" class='btn btn-primary' style='width:inherit'><i class='fal fa-check'></i> @SharedLocalizer.GetLocalizedHtmlString("Submit")</button>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('#btnUpdateTaskStatus').click(function () {
+            //alert($('#routeDetailId').val());
+            //alert($('#Status').val());
+            //alert($('#APPROVER_NOTES').val());
+            $.ajax({
+                url: applicationName + 'Approvals/Inbox/ChangeStatus',
+                //type: "post",
+                data: { status: $('#Status').val(), APPROVER_NOTES: $('#APPROVER_NOTES').val(), id: $('#routeDetailId').val() },
+                success: function (data) {
+                    location.reload();
+                }
+            })
+        });
+    });
+</script>

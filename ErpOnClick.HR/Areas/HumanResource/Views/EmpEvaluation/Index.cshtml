@@ -1,0 +1,291 @@
+﻿@using ErpOnClick.DAL.Models
+@using ErpOnClick.ErpMain.Resources
+@using ErpOnClick.ErpMain.Areas.ESS.Models;
+@inject LocService SharedLocalizer
+
+@{
+
+    List<Lookups> evaluationTypeList = Model.evaluationTypeList;
+    List<Emp> employeeList = Model.employeeList;
+
+}
+
+@section TabName{
+    Vacant jobs Setup
+}
+<div>
+    <div class="card card-default card-outline col-sm-12" style="height: 10rem !important;">
+        <div class="card-header">
+            <h3 class="card-title">
+                @SharedLocalizer.GetLocalizedHtmlString("Employee Evaluation Template")
+            </h3>
+
+        </div>
+
+        <div class="card-body">
+            <div class="mb-12">
+                <div class="row">
+                    <div class="col-sm-12 ">
+                        <h5>
+                            Please click to download evaluation template
+                            <a href="~/Files/EmployeeEvaluationForm.xlsx" download="">@SharedLocalizer.GetLocalizedHtmlString("Download Evaluation Form")</a>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <form id="frmEdit" role="form">
+
+        <div class="card card-default card-outline col-lg-12">
+
+            <div class="card-header">
+                <h2 class="card-title">
+                    @SharedLocalizer.GetLocalizedHtmlString("Employee Evaluation")
+                </h2>
+                <div class="card-tools float-right">
+                    <button type="submit" class="btn  btn-sm btn-primary">
+                        <i class="fal fa-save fa-fw"></i>@SharedLocalizer.GetLocalizedHtmlString("Save")
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-sm-4 ">
+                        <div class="form-group">
+                            <label>@SharedLocalizer.GetLocalizedHtmlString("Employee")</label>
+                            <select id="EmpId" name="EmpId" class="form-control" required readonly>
+
+                                @foreach (var item in employeeList)
+                                {
+                                    <option value="@item.EmpId">
+                                        @(item.FirstNameEn + " " + item.FatherNameEn + " " + item.GrandNameEn + " " + item.FamilyNameEn)
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 ">
+                        <div class="form-group">
+                            <label>@SharedLocalizer.GetLocalizedHtmlString("Evaluation Type")</label>
+                            <select id="EvaluationTypeId" name="EvaluationTypeId" class="form-control" required>
+
+                                @foreach (var item in evaluationTypeList)
+                                {
+                                    <option value="@item.LookupId">
+                                        @(item.LookupNameEn)
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 ">
+                        <div class="form-group">
+                            <label>@SharedLocalizer.GetLocalizedHtmlString("Evaluation Year")</label>
+                            <select id="EvaluationYear" name="EvaluationYear" class="form-control" required>
+                                <option value="2020">2020</option>
+                                <option value="2021" selected>2021</option>
+                                <option value="2022">2022</option>
+                            </select>
+                        </div>
+                    </div>
+                    @*<div class="col-sm-3 ">
+                            <div class="form-group">
+                                <label>@SharedLocalizer.GetLocalizedHtmlString("Evaluation Quarter")</label>
+                                <select id="EvaluationYear" name="EvaluationYear" class="form-control">
+                                    <option value="0">Please Select</option>
+                                    <option value="Q1">Q1</option>
+                                    <option value="Q2">Q2</option>
+                                    <option value="Q3">Q3</option>
+                                    <option value="Q4">Q4</option>
+                                </select>
+                            </div>
+                        </div>*@
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>@SharedLocalizer.GetLocalizedHtmlString("Date From")</label>
+                            <input type="text" id="DateFrom" name="DateFrom" class="form-control DatePicker" value="@DateTime.Now.AddMonths(-3).ToString("dd-MMM-yyyy")"
+                                   required>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>@SharedLocalizer.GetLocalizedHtmlString("Date To")</label>
+                            <input type="text" id="DateTo" name="DateTo" class="form-control DatePicker" value="@DateTime.Now.ToString("dd-MMM-yyyy")"
+                                   required>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>@SharedLocalizer.GetLocalizedHtmlString("Attachment")</label>
+                            <input type="file" id="AttachmentFile" name="AttachmentFile" class="form-control"
+                                   required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card card-outline card-outline col-lg-12">
+            <div class="card-header">
+                <h3 class="card-title">
+                    @SharedLocalizer.GetLocalizedHtmlString("Remarks")
+                </h3>
+
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body pad">
+                <div class="mb-3">
+                    <textarea required id="Remarks" rows="3" name="Remarks" maxlength="500"
+                              style="width: 100%; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                </div>
+
+            </div>
+        </div>
+    </form>
+
+    <div class="card card-default card-outline">
+
+        <div class="card-body">
+
+            <div id="divList"></div>
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script>
+        $(function () {
+            BindGrid();
+
+
+        });
+        var applicationName = getApplicationName();
+        $.validator.setDefaults({
+            submitHandler: function (e) {
+
+                submitForm(e);
+            }
+        });
+        $('#frmEdit').validate({
+            rules: {
+                EmpId: {
+                    required: true
+                },
+                AttachmentFile: {
+                    required: true
+                },
+                EvaluationTypeId: {
+                    required: true
+                },
+                EvaluationTypeYear: {
+                    required: true
+                },
+                DateFrom: {
+                    required: true
+                },
+                DateTo: {
+                    required: true
+                },
+                Remarks: {
+                    required: true,
+                    maxlength:500
+                }
+
+
+            },
+            messages: {
+                EmpId: {
+                    required: "This field is required"
+                },
+                AttachmentFile: {
+                    required: "This field is required"
+                },
+                EvaluationTypeId: {
+                    required: "This field is required"
+                },
+                EvaluationTypeYear: {
+                    required: "This field is required"
+                },
+                DateFrom: {
+                    required: "This field is required"
+                },
+                DateTo: {
+                    required: "This field is required"
+                },
+                Remarks: {
+                    required: "This field is required",
+                    maxlength: "Maximum 500 characters are allowed"
+                }
+
+
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+        function submitForm() {
+            //$('#frmEdit').on('submit', function (e) {
+            //e.preventDefault();
+
+            confirmAction('Confirm ?', 'Are you sure you want to save changes ?', 'info', 'Yes', 'No').then(function (result) {
+                if (result.value == true) {
+
+                    var params = $('#frmEdit').serialize();
+                    var formEl = document.forms.frmEdit;
+                    var formData = new FormData(formEl);
+
+                    $.ajax({
+                        url: applicationName + "HumanResource/EmpEvaluation/save",
+                        type: "POST",
+                        data: formData ? formData : params,
+                        async: false,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        success: function (data) {
+                            if (data.result.isError != true) {
+                                showMsg('Saved !', 'Record has been saved !', 'success');
+                                setTimeout(function () {
+                                    window.location = applicationName + 'HumanResource/EmpEvaluation';
+                                }, 500);
+                            }
+                            else if (data.result.msg != '') {
+                                showMsg('Save Failed !', data.result.msg, 'error');
+                            }
+                            else {
+                                showMsg('Save Failed !', 'Something went wrong. Try again', 'error');
+                            }
+                        }
+                    });
+                }
+            });
+            //});
+        }
+
+        function BindGrid() {
+            var date = "";
+            $('#divList').html('<h5 class="margin-0"><p><i class="fa fa-spinner fa-spin fa-fw"></i> Please wait while data is loading...</p></h5>');
+            $.ajax({
+                url: applicationName + 'HumanResource/EmpEvaluation/_list',
+                data: { date: date },
+                success: function (data) {
+                    $('#divList').html(data);
+                }
+            })
+        };
+
+    </script>
+}

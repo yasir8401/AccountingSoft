@@ -1,0 +1,222 @@
+﻿@using ErpOnClick.DAL.Models
+@{
+    var role = User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Role).Value;
+
+
+    List<PmsCompany> Companies = Model.Companies;
+    List<PmsUser> Managers = Model.Managers;
+    PmsUser user = Model.User;
+    bool isEdit = (user != null);
+
+
+}
+
+
+
+<form id="frmEdit" role="form">
+    <input type="hidden" id="ACTION_TYPE" name="ACTION_TYPE" value="@(isEdit ? "update" : "save")" />
+    <input type="hidden" id="UserId" name="UserId" value="@(user!=null?user.UserId: 0)" @(isEdit ? "readonly" : "") required autofocus>
+    <div class="row">
+        <div class="col-lg-8">
+
+            <div class="card card-default card-outline">
+
+                <div class="card-header">
+                    <h2 class="card-title">
+                        User
+                    </h2>
+                    <!-- tools box -->
+                    <div class="card-tools">
+                        <button type="submit" class="btn  btn-sm btn-primary">
+                            <i class="fas fa-save fa-fw"></i> Save
+                        </button>
+                        <a href="~/PMS/PMSUsers" type="button" class="btn  btn-sm btn-default">
+                            <i class="fas fa-arrow-left fa-fw"></i> Return
+                        </a>
+                    </div>
+                    <!-- /. tools -->
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group text-center">
+                                @if (user != null && user.UserImageUrl != null)
+                                {
+                                    <img id="image" onclick="uploadimg()" style="cursor:pointer;border-radius:10% !important;width: 25%;" src="~/Files/@user.UserImageUrl" alt="Profile Picture">
+                                }
+                                else
+                                {
+                                    <img id="image" onclick="uploadimg()" style="cursor: pointer;opacity:40%;width: 25%;" src="~/adminlte/dist/img/dummyuser.png" alt="Please Select Picture" />
+                                }
+                            </div>
+                        </div>
+                        @*<div class="col-sm-6">
+                                <div class="form-group" style="float:right;padding: 0px 150px 0px 0px;">
+                                    <img width="60%" src="@(user!= null && user.UserImageUrl!=null ? "/Files/"+user.UserImageUrl : "/adminlte/dist/img/dummyuser.png" )" />
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group" style="padding-top: 15% !important">
+                                    <h2 class="card-title">
+                                        User Image
+                                    </h2>
+                                    <input style="border:none !important" type="file" id="ProfilePicFile" name="ProfilePicFile" class="form-control">
+                                </div>
+                            </div>*@
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Company</label>
+                                <select id="CompanyId" name="CompanyId" class="form-control">
+                                    <option value="" selected disabled></option>
+                                    @foreach (var company in Companies)
+                                    {
+                                        <option value="@company.CompanyId" @(user != null && user.CompanyId != null && user.CompanyId == company.CompanyId ? "selected" : "")>@company.CompanyName</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>User Name</label>
+                                <input type="text" id="UserName" name="UserName" class="form-control" value="@(user!=null && user.UserName!= null?user.UserName: null)" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="text" id="UserPassword" name="UserPassword" class="form-control" value="@(user!=null && user.UserPassword != null ? user.UserPassword: null)" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="UserEmail" name="UserEmail" class="form-control" value="@(user!=null && user.UserEmail != null ? user.UserEmail: null)" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Contact Number</label>
+                                <input type="number" id="UserContact" name="UserContact" class="form-control" value="@(user!=null && user.UserContact != null ?user.UserContact: null)" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Role</label>
+                                <select id="UserRole" name="UserRole" class="form-control" required>
+                                    <option value="" selected disabled></option>
+                                    @if (role == "SuperAdmin")
+                                    {
+                                        <option value="Manager" @(user != null && user.UserRole != null && user.UserRole == "Manager" ? "selected" : "")>Manager</option>
+                                        <option value="Developer" @(user != null && user.UserRole != null && user.UserRole == "Developer" ? "selected" : "")>Developer</option>
+                                    }
+                                    else if (role == "Manager")
+                                    {
+                                        <option value="Developer" @(user != null && user.UserRole != null && user.UserRole == "Developer" ? "selected" : "")>Developer</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        @*<div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>User Manager</label>
+                                    <select id="UserManagerId" name="UserManagerId" class="form-control">
+                                        <option value="" selected disabled></option>
+                                        @foreach (var manager in Managers)
+                                        {
+                                            <option value="@manager.UserId" @(user != null && user.UserManagerId != null && user.UserManagerId == manager.UserId ? "selected" : "")>@manager.UserName</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>*@
+                    </div>
+                    <input hidden onchange="imguploaded()" type="file" id="ProfilePicFile" name="ProfilePicFile" class="form-control">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+@section scripts{
+
+    <script>
+        $(function () {
+            $('#Forms').addClass("menu-open");
+            $('#Reports').removeClass("menu-open");
+        });
+
+        $('#frmEdit').on('submit', function (e) {
+            e.preventDefault();
+            var actionType = $('#ACTION_TYPE').val();
+
+            confirmAction('Confirm ?', 'Are you sure you want to save changes ?', 'info', 'Yes', 'No').then(function (result) {
+                if (result.value == true) {
+                    var params = $('#frmEdit').serialize();
+                    var formEl = document.forms.frmEdit;
+                    var formData = new FormData(formEl);
+                    $.ajax({
+                        url: "~/PMS/PMSUsers/" + actionType,
+                        async: false,
+                        type: "POST",
+                        data: formData ? formData : params,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        success: function (data) {
+                            if (data.result.isError != true) {
+                                showMsg('Saved !', 'Record has been saved !', 'success');
+                                setTimeout(function () {
+                                    window.location = '~/PMS/PMSUsers';
+                                }, 500);
+                            }
+                            else if (data.result.msg != '') {
+                                showMsg('Save Failed !', data.result.msg, 'error');
+                            }
+                            else {
+                                showMsg('Save Failed !', 'Something went wrong. Try again', 'error');
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+
+        function uploadimg() {
+
+            $('#ProfilePicFile').trigger('click');
+
+        }
+
+        function imguploaded() {
+
+            var fileUpload = $("#ProfilePicFile").get(0);
+            var files = fileUpload.files;
+            var data = new FormData();
+            data.append(files[0].name, files[0]);
+            $.ajax({
+                url: '~/PMS/PMSUsers/UploadImage',
+                type: 'POST',
+                data: data,
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response.result != null) {
+                        $('#image').attr("src", "/Files/" + response.result);
+                        $('#image').attr("onclick", againuploadimg());
+                        //$('#notuploded').attr("style", "visibility: hidden");
+                        //$('#uploded').attr("style", "visibility: visible");
+                    }
+                    else {
+                        showMsg('Upload Image Failed', "", 'error');
+                    }
+                }
+            });
+        }
+
+    </script>
+
+}

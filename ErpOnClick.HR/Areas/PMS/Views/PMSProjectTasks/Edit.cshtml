@@ -1,0 +1,261 @@
+﻿@using ErpOnClick.DAL.Models
+@{
+    var role = User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Role).Value;
+
+
+    List<PmsProjects> Projects = Model.Projects;
+    List<PmsProjectTeam> ProjectTeam = Model.ProjectTeam;
+    PmsProjectTasks ProjectTask = Model.ProjectTask;
+    bool isEdit = (ProjectTask != null);
+
+    var userid = User.Claims.FirstOrDefault(c => c.Type == "UserId").Value;
+
+    bool dev = (role == "Developer");
+}
+
+
+
+<form id="frmEdit" role="form">
+    <input type="hidden" id="ACTION_TYPE" name="ACTION_TYPE" value="@(isEdit ? "update" : "save")" />
+    <input type="hidden" id="TaskId" name="TaskId" value="@(ProjectTask!=null?ProjectTask.TaskId: 0)" @(isEdit ? "readonly" : "") required autofocus>
+    <input type="hidden" id="TaskCreatedBy" name="TaskCreatedBy" value="@(ProjectTask!=null?ProjectTask.TaskCreatedBy: 0)" @(isEdit ? "readonly" : "") required>
+    <input type="hidden" id="TaskCreatedDate" name="TaskCreatedDate" value="@(ProjectTask!=null?Convert.ToDateTime(ProjectTask.TaskCreatedDate).ToString("dd-MMM-yyyy"): null)" @(isEdit ? "readonly" : "") required>
+    <div class="row">
+        <div class="col-lg-8">
+
+            <div class="card card-default card-outline">
+
+                <div class="card-header">
+                    <h2 class="card-title">
+                        Project Task
+                    </h2>
+                    <!-- tools box -->
+                    <div class="card-tools">
+                        <button type="submit" class="btn  btn-sm btn-primary">
+                            <i class="fas fa-save fa-fw"></i> Save
+                        </button>
+                        <a href="~/PMS/PMSProjectTasks" type="button" class="btn  btn-sm btn-default">
+                            <i class="fas fa-arrow-left fa-fw"></i> Return
+                        </a>
+                    </div>
+                    <!-- /. tools -->
+                </div>
+                <div class="card-body">
+
+                    <div class="row">
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Project</label>
+                                <select id="ProjectId" name="ProjectId" class="form-control" required @(dev ? "readonly" : "")>
+                                    <option value="" disabled @((ProjectTask != null && ProjectTask.ProjectId == 0) || (ProjectTask == null) ? "selected" : "")></option>
+                                    @foreach (var project in Projects)
+                                    {
+                                        <option value="@project.ProjectId" @(dev ? "disabled" : "") @(ProjectTask != null && ProjectTask.ProjectId == project.ProjectId ? "selected" : "")>
+                                            @project.ProjectName
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Task Name</label>
+                                <input type="text" id="TaskName" name="TaskName" class="form-control" value="@(ProjectTask!=null?ProjectTask.TaskName: null)" required @(dev ? "readonly" : "")>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Start Date</label>
+                                <input type="text" id="TaskStartDate" name="TaskStartDate" class="form-control DatePicker" value="@(ProjectTask!=null?Convert.ToDateTime(ProjectTask.TaskStartDate).ToString("dd-MMM-yyyy"): null)" required @(dev ? "readonly" : "")>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>End Date</label>
+                                <input type="text" id="TaskEndDate" name="TaskEndDate" class="form-control DatePicker" value="@(ProjectTask!=null?Convert.ToDateTime(ProjectTask.TaskEndDate).ToString("dd-MMM-yyyy"): null)" required @(dev ? "readonly" : "")>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Task Description</label>
+                                <textarea required id="TaskDesc" rows="3" name="TaskDesc" style="width: 100%; height: 100px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" @(dev ? "disabled" : "")>@(ProjectTask != null? ProjectTask.TaskDesc : "")</textarea>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Task Assigned To</label>
+                                <select id="AssignedToId" name="AssignedToId" class="form-control" required @(dev ? "readonly" : "")>
+                                    <option value="" disabled @((ProjectTask != null && ProjectTask.AssignedToId == 0) || (ProjectTask == null) ? "selected" : "")></option>
+                                    @if (isEdit)
+                                    {
+                                        @foreach (var team in ProjectTeam)
+                                        {
+                                            <option value="@team.ProjectUserId" @(dev ? "disabled" : "") @(ProjectTask != null && ProjectTask.AssignedToId == team.ProjectUserId ? "selected" : "")> @team.ProjectUser.UserName</option>
+
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Task Progress (in %)</label>
+                                <select class="form-control" name="TaskCompletedPercentage" id="TaskCompletedPercentage" required>
+                                    <option value="0" @(ProjectTask != null && ProjectTask.TaskCompletedPercentage == 0 ? "selected" : "")>0%</option>
+                                    <option value="25" @(ProjectTask != null && ProjectTask.TaskCompletedPercentage == 25 ? "selected" : "")>25%</option>
+                                    <option value="50" @(ProjectTask != null && ProjectTask.TaskCompletedPercentage == 50 ? "selected" : "")>50%</option>
+                                    <option value="75" @(ProjectTask != null && ProjectTask.TaskCompletedPercentage == 75 ? "selected" : "")>75%</option>
+                                    <option value="100" @(ProjectTask != null && ProjectTask.TaskCompletedPercentage == 100 ? "selected" : "")>100%</option>
+                                </select>
+                                @*<input type="number" min="0" max="100" id="TaskCompletedPercentage" name="TaskCompletedPercentage" class="form-control" value="@(ProjectTask!=null?ProjectTask.TaskCompletedPercentage: 0)" required>*@
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Task Published Url</label>
+                                <input type="text" id="TaskPublishedUrl" name="TaskPublishedUrl" class="form-control" value="@(ProjectTask!=null?ProjectTask.TaskPublishedUrl: null)">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Status</label>
+                                <select id="TaskStatus" name="TaskStatus" class="form-control" required @(dev ? "readonly" : "")>
+                                    <option value="Complete" @(dev ? "disabled" : "") @(ProjectTask != null && ProjectTask.TaskStatus != null && ProjectTask.TaskStatus == "Complete" ? "selected" : "")>Completed</option>
+                                    <option value="InComplete" @(dev ? "disabled" : "") @((ProjectTask != null && ProjectTask.TaskStatus != null && ProjectTask.TaskStatus == "InComplete") || (ProjectTask == null) ? "selected" : "")>Incompleted</option>
+                                    <option value="Pending" @(dev ? "disabled" : "") @((ProjectTask != null && ProjectTask.TaskStatus != null && ProjectTask.TaskStatus == "Pending") ? "selected" : "")>Pending</option>
+                                    <option value="Rejected" @(dev ? "disabled" : "") @(ProjectTask != null && ProjectTask.TaskStatus != null && ProjectTask.TaskStatus == "Rejected" ? "selected" : "")>Cancelled</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</form>
+
+
+
+
+
+@section scripts{
+
+    <script>
+        $(function () {
+            $('#Forms').addClass("menu-open");
+            $('#Reports').removeClass("menu-open");
+
+        });
+
+        $('#frmEdit').on('submit', function (e) {
+            e.preventDefault();
+            var actionType = $('#ACTION_TYPE').val();
+
+            confirmAction('Confirm ?', 'Are you sure you want to save changes ?', 'info', 'Yes', 'No').then(function (result) {
+
+                if (result.value == true) {
+                    var progress = $('#TaskCompletedPercentage').val();
+                    var params = $('#frmEdit').serialize();
+                    var taskObject = {
+                        TaskId: parseInt($('#TaskId').val()),
+                        TaskCreatedBy: parseInt($('#TaskCreatedBy').val()),
+                        TaskCreatedDate: $('#TaskCreatedDate').val(),
+                        ProjectDesc: $('#ProjectDesc').val(),
+                        TaskName: $('#TaskName').val(),
+                        TaskStartDate: $('#TaskStartDate').val(),
+                        TaskEndDate: $('#TaskEndDate').val(),
+                        TaskDesc: $('#TaskDesc').val(),
+                        TaskStatus: $('#TaskStatus').val(),
+                        TaskPublishedUrl: $('#TaskPublishedUrl').val(),
+                        ProjectId: parseInt($('#ProjectId').val()),
+                        AssignedToId: parseInt($('#AssignedToId').val()),
+                        TaskCompletedPercentage: parseInt($('#TaskCompletedPercentage').val()),
+                    }
+                    var completed = false;
+                    if (progress == 100) {
+                        confirmAction('Confirm ?', 'Are you sure you Completed the Project ?', 'info', 'Yes', 'No').then(function (result) {
+                            if (result.value == true) {
+                                completed = true;
+                                var data = {
+                                    Project: taskObject,
+                                    completed: completed
+                                };
+                                $.ajax({
+                                    url: "PMSProjectTasks/" + actionType,
+                                    async: false,
+                                    type: "POST",
+                                    data: data,
+                                    success: function (data) {
+                                        if (data.result.isError != true) {
+                                            showMsg('Saved !', 'Record has been saved !', 'success');
+                                            setTimeout(function () {
+                                                window.location = 'PMSProjectTasks';
+                                            }, 1000);
+                                        }
+                                        else if (data.result.msg != '') {
+                                            showMsg('Save Failed !', data.result.msg, 'error');
+                                        }
+                                        else {
+                                            showMsg('Save Failed !', 'Something went wrong. Try again', 'error');
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    }
+                    else {
+                        var data = {
+                            Project: taskObject,
+                            completed: completed
+                        };
+                        $.ajax({
+                            url: "PMSProjectTasks/" + actionType,
+                            async: false,
+                            type: "POST",
+                            data: { postedData: data },
+                            success: function (data) {
+                                if (data.result.isError != true) {
+                                    showMsg('Saved !', 'Record has been saved !', 'success');
+                                    setTimeout(function () {
+                                        window.location = 'PMSProjectTasks';
+                                    }, 1000);
+                                }
+                                else if (data.result.msg != '') {
+                                    showMsg('Save Failed !', data.result.msg, 'error');
+                                }
+                                else {
+                                    showMsg('Save Failed !', 'Something went wrong. Try again', 'error');
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        });
+
+        $('#ProjectId').change(function () {
+            var id = $('#ProjectId').val();
+
+            $.ajax({
+                url: "PMSProjectTasks/GetProjectTeam",
+                async: false,
+                type: "POST",
+                data: { id: id },
+                success: function (data) {
+                    var item = '';
+                    var startrow = '<option value="" disabled selected><option>';
+                    $.each(data.result, function (i, product) {
+                        item += "<option value='" + product.projectUserId + "'>" + product.userName + "</option>";
+                    });
+                    $("#AssignedToId").append(item);
+                }
+            });
+
+        });
+
+    </script>
+
+}

@@ -1,0 +1,67 @@
+﻿@using ErpOnClick.DAL.Models
+@{
+    List<PmsMessages> Messages = Model.Messages;
+
+    var userid = User.Claims.FirstOrDefault(c => c.Type == "UserId").Value;
+
+}
+
+<div class="table-responsive pb-2">
+    <table id="dtList" class="table table-hover table-condensed">
+        <thead>
+            <tr>
+                <th>Project</th>
+                <th>Task </th>
+                <th>Message</th>
+                <th>Sent By</th>
+                <th>Received By</th>
+                <th>Message Date</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tfoot style="display:table-row-group">
+            <tr class="text-center">
+                <th>Project</th>
+                <th>Task </th>
+                <th>Message</th>
+                <th>Sent By</th>
+                <th>Received By</th>
+                <th>Message Date</th>
+                <th></th>
+            </tr>
+        </tfoot>
+        <tbody>
+            @foreach (var item in Messages)
+            {
+                var bgcolor = "";
+                var type = "";
+                if (item.SendBy == Convert.ToInt32(userid))
+                {
+                    bgcolor = "danger";
+                    type = "Sent";
+                }
+                else if (item.SendTo == Convert.ToInt32(userid))
+                {
+                    bgcolor = "success";
+                    type = "Received";
+                }
+                <tr class="text-center  @bgcolor">
+                    <td>@(item.Task != null && item.Task.Project != null && item.Task.Project.ProjectName != null ? item.Task.Project.ProjectName : null)</td>
+                    <td class="text-left">@(item.Task != null && item.Task.TaskName != null ? item.Task.TaskName : null)</td>
+                    <td class="text-center">@item.Message</td>
+                    <td class="text-center">@(item.SendByNavigation != null && item.SendByNavigation.UserName != null ? item.SendByNavigation.UserName : null)</td>
+                    <td class="text-center">@(item.SendToNavigation != null && item.SendToNavigation.UserName != null ? item.SendToNavigation.UserName : null)</td>
+                    <td class="text-center">@(item.Date != null ? Convert.ToDateTime(item.Date).ToString("dd-MMM-yyyy") : System.DateTime.Now.ToString("dd-MMM-yyyy"))</td>
+                    <td class="text-center font-weight-bolder">@type</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<script>
+    $(function () {
+        _initDatatable('#dtList');
+    });
+</script>

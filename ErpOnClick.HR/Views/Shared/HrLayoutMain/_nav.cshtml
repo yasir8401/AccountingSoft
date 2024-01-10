@@ -1,0 +1,149 @@
+﻿@using ErpOnClick.ErpMain.Resources
+
+@inject LocService SharedLocalizer
+
+@{
+    string _baseUrl = Convert.ToString(ViewData["baseUrl"]);
+}
+
+@inject LocService SharedLocalizer
+
+
+
+<ul id="js-nav-menu" class="nav-menu">
+
+    <li class="active">
+        <a href="~/HumanResource/hrdashboard" title="Category" data-filter-tags="category">
+            <i class="fal fa-tachometer-alt"></i>
+            <span class="nav-link-text" data-i18n="nav.hr"> @SharedLocalizer.GetLocalizedHtmlString("Dashboard")</span>
+        </a>
+    </li>
+
+    <li>
+        <a href="#" title="Category" data-filter-tags="category">
+            <i class="fal fa-users"></i>
+            <span class="nav-link-text" data-i18n="nav.hr"> @SharedLocalizer.GetLocalizedHtmlString("HR")</span>
+        </a>
+        <ul>
+
+            <li><a href="~/HumanResource/emp" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Employees")</span></a></li>
+            <li><a href="~/HumanResource/document" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Documents")</span></a></li>
+            <li><a href="~/HumanResource/Shifts" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Shifts")</span></a></li>
+            <li><a href="~/HumanResource/JobOffers" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Job Proposal")</span></a></li>
+            <li><a href="~/HumanResource/EmpEvaluation" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Employee Evaluation")</span></a></li>
+        </ul>
+    </li>
+
+    <li>
+        <a href="#" title="Category" data-filter-tags="category">
+            <i class="fal fa-list-alt"></i>
+            <span class="nav-link-text" data-i18n="nav.hr"> @SharedLocalizer.GetLocalizedHtmlString("Payroll")</span>
+        </a>
+        <ul>
+
+            <li><a href="~/HumanResource/EmpAttendances" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Attendance")</span></a></li>
+            <li><a href="~/HumanResource/OverTimeRequest" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("OverTime Details")</span></a></li>
+            <li><a href="~/HumanResource/Leave" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Leaves Details")</span></a></li>
+            <li><a href="~/HumanResource/Loans" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Employee Loans")</span></a></li>
+            <li><a href="~/HumanResource/PerformanceBaseSalary" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Additional Salary")</span></a></li>
+            <li><a href="~/HumanResource/SalaryPayablesPerMonth" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Employee Deductions")</span></a></li>
+            <li><a href="~/HumanResource/PayRunM" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Pay Run")</span></a></li>
+
+        </ul>
+    </li>
+
+
+    <li>
+        <a href="#" title="Category" data-filter-tags="category">
+            <i class="fal fa-sitemap"></i>
+            <span class="nav-link-text" data-i18n="nav.hr"> @SharedLocalizer.GetLocalizedHtmlString("Hierarchy")</span>
+        </a>
+        <ul>
+
+            <li><a href="~/HumanResource/Hierarchy" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("HumanResource Structure")</span></a></li>
+            <li><a href="~/HumanResource/positions" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Positions")</span></a></li>
+            <li><a href="~/HumanResource/grades" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Grades")</span></a></li>
+
+        </ul>
+    </li>
+
+
+    <li>
+        <a href="#" title="Category" data-filter-tags="category">
+            <i class="fal fa-cog"></i>
+            <span class="nav-link-text" data-i18n="nav.hr"> @SharedLocalizer.GetLocalizedHtmlString("Setup")</span>
+        </a>
+        <ul>
+
+            <li><a href="~/HumanResource/overtimesettings" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("OverTime Profile")</span></a></li>
+            <li><a href="~/HumanResource/nationalholidays" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("National Holidays")</span></a></li>
+            <li><a href="~/HumanResource/specialoccasions" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Special Occasions")</span></a></li>
+            <li><a href="~/HumanResource/AbsentProfiles" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Absent Profiles")</span></a></li>
+            <li><a href="~/HumanResource/gosisettings" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Gosi Setting")</span></a></li>
+            <li><a href="~/HumanResource/HousingAllowances" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Housing Allowances")</span></a></li>
+            <li><a href="~/HumanResource/AirTicketProfiles" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Air Ticket Profile")</span></a></li>
+            <li><a href="~/HumanResource/PayGroups" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("PayGroup")</span></a></li>
+            <li><a href="~/HumanResource/Requests" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("General Requests")</span></a></li>
+            <li><a href="~/HumanResource/ExpClaims" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Expense Claims")</span></a></li>
+            <li><a href="~/HumanResource/EmpExperience" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Experience")</span></a></li>
+            <li><a href="~/HumanResource/Course" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Course's")</span></a></li>
+            <li><a href="~/HumanResource/Achievement" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Achievement's")</span></a></li>
+            <li><a href="~/HumanResource/LeavesProfile" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Leave Profile")</span></a></li>
+
+
+        </ul>
+    </li>
+
+
+    <li>
+        <a href="#" title="Category" data-filter-tags="category">
+            <i class="fal fa-chart-bar"></i>
+            <span class="nav-link-text" data-i18n="nav.hr"> @SharedLocalizer.GetLocalizedHtmlString("Reports")</span>
+        </a>
+        <ul>
+            <li><a href="~/HumanResource/EmpDetailLeavesReport" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Leaves Summary Report")</span></a></li>
+            <li><a href="~/HumanResource/EmpAttendances/EmpAttendanceReport" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Attendances Report")</span></a></li>
+        </ul>
+    </li>
+
+    <li class="active">
+        <a href="~/home/Index" title="Category" data-filter-tags="category">
+            <i class="fal fa-arrow-left"></i>
+            <span class="nav-link-text" data-i18n="nav.hr"> @SharedLocalizer.GetLocalizedHtmlString("Return")</span>
+        </a>
+    </li>
+
+    <li class="active ">
+        <a href="~/home/logout" title="Category" data-filter-tags="category">
+            <i class=" fal fa-sign-out"></i>
+            <span class="nav-link-text" data-i18n="nav.category">  @SharedLocalizer.GetLocalizedHtmlString("Logout")</span>
+        </a>
+    </li>
+
+</ul>
+
+
+
+
+
+<!-- Example of open and active states -->
+@*<li class="active ">
+        <a href="#" title="Category" data-filter-tags="category">
+            <i class="fal fa-plus"></i>
+            <span class="nav-link-text" data-i18n="nav.category">Open Item</span>
+        </a>
+        <ul>
+            <li class="active open">
+                <a href="javascript:void(0);" title="Menu child" data-filter-tags="utilities menu child">
+                    <span class="nav-link-text" data-i18n="nav.utilities_menu_child">Open Sub-category</span>
+                </a>
+                <ul>
+                    <li class="active">
+                        <a href="javascript:void(0);" title="Sublevel Item" data-filter-tags="utilities menu child sublevel item">
+                            <span class="nav-link-text" data-i18n="nav.utilities_menu_child_sublevel_item">Active Item</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </li>*@

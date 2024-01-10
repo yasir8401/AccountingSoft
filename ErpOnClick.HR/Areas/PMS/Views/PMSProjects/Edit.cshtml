@@ -1,0 +1,298 @@
+﻿@using ErpOnClick.DAL.Models;
+
+@{
+    List<PmsUser> user = Model.User;
+    List<PmsProjectTeam> ProjectTeam = Model.ProjectTeam;
+    List<PmsCompany> Companies = Model.Companies;
+    PmsProjects Project = Model.Project;
+    bool isEdit = (Project != null);
+}
+
+<link href="~/adminlte/dist/css/EditAbleTableCss.css" rel="stylesheet" />
+
+<form id="frmEdit" role="form">
+    <input type="hidden" id="ACTION_TYPE" name="ACTION_TYPE" value="@(isEdit ? "update" : "save")" />
+    <input type="hidden" id="ProjectId" name="ProjectId" class="form-control" value="@(Project != null ? Project.ProjectId : 0)" @(isEdit ? "readonly" : "") min="3" maxlength="3">
+
+    <div class="card card-default card-outline col-lg-12">
+
+        <div class="card-header">
+            <h2 class="card-title">
+                Project
+            </h2>
+            <!-- tools box -->
+            <div class="card-tools">
+                <button type="submit" class="btn  btn-sm btn-primary">
+                    <i class="fas fa-save fa-fw"></i> Save
+                </button>
+                <a href="~/PMS/PMSProjects" type="button" class="btn  btn-sm btn-default">
+                    <i class="fas fa-arrow-left fa-fw"></i> Return
+                </a>
+            </div>
+            <!-- /. tools -->
+        </div>
+        <div class="card-body">
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>Project Name</label>
+                        <input type="text" id="ProjectName" name="ProjectName" class="form-control" value="@(Project!=null?Project.ProjectName: null)" required>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>Company</label>
+                        <select id="CompanyId" name="CompanyId" class="form-control" required>
+                            <option></option>
+                            @foreach (var company in Companies)
+                            {
+                                <option value="@company.CompanyId" @(Project != null && Project.CompanyId == company.CompanyId ? "selected" : "")>
+                                    @company.CompanyName
+                                </option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label>Project Description</label>
+                        <textarea required id="ProjectDesc" rows="3" name="ProjectDesc" style="width: 100%; height: 100px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">@(Project != null? Project.ProjectDesc : "")</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="card card-default card-outline">
+        <div class="card-header">
+            <h2 class="card-title pt-1">
+                Team
+            </h2>
+            <div class="card-tools">
+                <a href="javascript:void(0)" class="btn btn-sm btn-default" onclick="addRow(1)">Add Row</a>
+                <a href="javascript:void(0)" class="btn btn-sm btn-default" onclick="addRow(3)">Add 3 Rows</a>
+                <a href="javascript:void(0)" class="btn btn-sm btn-default" onclick="addRow(5)">Add 5 Rows</a>
+
+            </div>
+        </div>
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+                <table id="tblLines" class="table table-bordered m-0 table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Team Member</th>
+
+                            <th width="30px"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="trSample" style="display:none">
+                            <td style="display:none">
+                                <input type="hidden" id="TeamId" name="TeamId" value="0">
+                            </td>
+                            <td class="text-center">
+                                <select id="ProjectUserId" name="ProjectUserId" class="form-control  text-center">
+                                    @if (isEdit)
+                                    {
+                                        <option value="" disabled selected></option>
+                                        @foreach (var itemUser in user)
+                                        {
+                                            <option value="@itemUser.UserId">
+                                                @itemUser.UserName
+                                            </option>
+                                        }
+                                    }
+                                </select>
+                            </td>
+                            <td>
+                                <a href="javascript:void(0)" id="lnkDelete" class="btn-sm btn-block text-danger" onclick="deleteRow($(this).parent().parent())">
+                                    <i id="faDelete" class="fa fa-trash"></i>
+                                    <i id="faUndo" class="fa fa-undo text-white" style="display:none"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        @if (ProjectTeam.Count() != 0)
+                        {
+
+                            @foreach (var item in ProjectTeam)
+                            {
+                                <tr>
+                                    <td style="display:none">
+                                        <input type="hidden" id="TeamId" name="TeamId" value="@(item.TeamId !=0 ? item.TeamId:0)">
+                                    </td>
+                                    <td class="text-center">
+                                        <select id="ProjectUserId" name="ProjectUserId" class="form-control text-center">
+                                            @if (isEdit)
+                                            {
+                                                @foreach (var itemUser in user)
+                                                {
+                                                    <option value="@itemUser.UserId" @(itemUser != null && itemUser.UserId == item.ProjectUserId ? "selected" : "")>
+                                                        @itemUser.UserName
+                                                    </option>
+                                                }
+                                            }
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="hidden" id="IsDeleted" name="IsDeleted" value="false">
+                                        <a href="javascript:void(0)" id="lnkDelete" class="btn-sm btn-block text-danger" onclick="deleteRow($(this).parent().parent())">
+                                            <i id="faDelete" class="fa fa-trash"></i>
+                                            <i id="faUndo" class="fa fa-undo text-white" style="display:none"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+@section scripts{
+
+    <script>
+
+        $(function () {
+            $('#Forms').addClass("menu-open");
+            $('#Reports').removeClass("menu-open");
+            var actionType = $('#ACTION_TYPE').val();
+            if (actionType == "save") {
+                addRow(3);
+
+            }
+            setTriggers();
+
+        });
+
+        $('#frmEdit').on('submit', function (e) {
+            e.preventDefault();
+
+            var routeArray = new Array();
+            var taskObject = {
+                ProjectId: parseInt($('#ProjectId').val()),
+                ProjectName: $('#ProjectName').val(),
+                ProjectDesc: $('#ProjectDesc').val(),
+                CompanyId: parseInt($('#CompanyId').val()),
+            }
+            $("#tblLines tbody TR").not("#trSample").each(function () {
+
+                var row = $(this);
+                var inputFields = row.find(":input");
+                var routeObject = {};
+                var user = row.find('#ProjectUserId').val();
+                if (user != null) {
+
+                    routeObject.TeamId = parseInt(row.find('#TeamId').val());
+                    routeObject.ProjectUserId = parseInt(row.find('#ProjectUserId').val());
+                    routeObject.IsDeleted = row.find('#IsDeleted').val()
+
+                    routeArray.push(routeObject);
+                }
+            });
+
+            var projectViewModel = {
+
+                Project: taskObject,
+                ProjectTeam: routeArray
+
+            }
+
+            var actionType = $('#ACTION_TYPE').val();
+
+            confirmAction('Confirm ?', 'Are you sure you want to save changes ?', 'info', 'Yes', 'No').then(function (result) {
+                if (result.value == true) {
+
+
+                    $.ajax({
+                        url: "~/PMS/PMSProjects/" + actionType,
+                        type: "POST",
+                        data: projectViewModel,
+                        async: false,
+                        success: function (data) {
+                            if (data.result.isError != true) {
+                                showMsg('Saved !', 'Record has been saved !', 'success');
+                                setTimeout(function () {
+                                    window.location = '~/PMS/PMSProjects';
+                                }, 500);
+                            }
+                            else if (data.result.msg != '') {
+                                showMsg('Save Failed !', data.result.msg, 'error');
+                            }
+                            else {
+                                showMsg('Save Failed !', 'Something went wrong. Try again', 'error');
+                            }
+                        }
+                    });
+
+
+                }
+            });
+        });
+
+        function addRow(n) {
+            var table = $('#tblLines');
+            trSample = table.find('#trSample');
+            for (var i = 0; i < n; i++) {
+                var newRow = trSample.clone();
+                newRow.removeAttr('id');
+                table.find('tbody').append(newRow);
+            }
+            table.find('tbody tr').not('#trSample').show();
+            setTriggers();
+
+        }
+        function setTriggers() {
+            var table = $('#tblLines');
+            table.find('tbody tr').each((i, item) => {
+                var tr = $(item);
+            });
+        }
+        function deleteRow(tr) {
+
+            tr.toggleClass('bg-danger');
+            tr.find('a > #faDelete').toggle();
+            tr.find('a > #faUndo').toggle();
+            var inputFields = tr.find('#IsDeleted');
+
+            var isDelete = tr.find('#IsDeleted').val();
+            if (isDelete == "false") {
+                tr.find('#IsDeleted').val("true");
+            }
+            if (isDelete == "true") {
+                tr.find('#IsDeleted').val("false");
+            }
+
+        }
+
+        $('#CompanyId').change(function () {
+
+            var id = $('#CompanyId').val();
+
+            $.ajax({
+                url: "~/PMS/PMSProjects/GetCompanyTeam",
+                async: false,
+                type: "POST",
+                data: { id: id },
+                success: function (data) {
+                    var item = '';
+                    var startrow = '<option value="" disabled selected></option>';
+                    item += startrow;
+                    $.each(data.result, function (i, product) {
+                        debugger
+                        item += "<option value='" + product.userId + "'>" + product.userName + "</option>";
+                    });
+                    $('#tblLines tbody tr').each(function (e) {
+                        $(this).find("#ProjectUserId").html(item);
+                    });
+                }
+            });
+
+        });
+    </script>
+}

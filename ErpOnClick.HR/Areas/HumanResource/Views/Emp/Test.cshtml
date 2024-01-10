@@ -1,0 +1,59 @@
+﻿@model ErpOnClick.DAL.Models.Emp
+
+@{
+    ViewData["Title"] = "Test";
+}
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+<h1>Test</h1>
+
+<h4>Emp</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Test">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="EmpId" class="control-label"></label>
+                    <input asp-for="EmpId" class="form-control" />
+                    <span asp-validation-for="EmpId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EmpCode" class="control-label"></label>
+                    <input asp-for="EmpCode" data-val="true" required class="form-control" />
+                    <span asp-validation-for="EmpCode" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FirstNameEn" class="control-label"></label>
+                    <input asp-for="FirstNameEn" class="form-control" data-val="true" data-val-minlength="The field UserName must be a string or array type with a minimum length of &#x27;6&#x27;." data-val-minlength-min="6"/>
+                    <span asp-validation-for="FirstNameEn" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        <form method="post">
+            Name:<input type="text" class="form-control" data-val="true" data-val-length="5-60 character" data-val-length-max="60" data-val-length-min="5" data-val-required="Full Name Required" id="FullName" name="FullName" value="" />
+            <span class="field-validation-valid text-danger" data-valmsg-for="FullName" data-valmsg-replace="true"></span>
+
+            Email: <input type="email" data-val="true" data-val-email="Invalid email" data-val-required="Email required" id="Email" name="Email" value="" />
+            <span class="field-validation-valid" data-valmsg-for="Email" data-valmsg-replace="true"></span>
+
+            Mobile: <input type="text" data-val="true" data-val-length="10-14 character" data-val-length-max="14" data-val-length-min="10" data-val-required="Contact Numbers Required" id="ContactNumbers" name="ContactNumbers" value="" />
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+@section scripts{
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+}
+
+

@@ -1,0 +1,68 @@
+﻿<div class="modal fade" id="_attachmentModal" tabindex="-1" role="dialog" aria-labelledby="_attachmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title pull-left" id="_attachmentModalLabel">Task Attachments</h5>
+                <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="modal-body" id="formAttachmentdiv">
+                <form id="formAttachment" role="form">
+                    <div class="col-md-12">
+                        <div class="modal-value">
+                            <input hidden id="TaskId" name="TaskId" />
+                        </div>
+                        <div class="row" id="hidefordetails">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label>Upload File</label>
+                                    <input style="border:none !important" type="file" id="AttachmentFile" name="AttachmentFile" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="form-group">
+                                    <label>File Name</label>
+                                    <input type="text" id="AttachmentName" name="AttachmentName" class="form-control" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button type="submit" id="formsubmit" class="btn  btn-sm btn-primary">
+                                    <i class="fa fa-paperclip fa-fw"></i> Upload Now
+                                </button>
+                            </div>
+                            <div class="col-md-8">
+                                <span style="color: white;background-color: #8bd8bd;font-weight: 900;" id="submitresult"></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+
+                <div class="row pt-3" id="dtrow" style="display:none">
+                    <div class="col-md-12">
+                        <div class="table-responsive pb-2">
+                            <table id="dtList" class="table table-hover table-condensed ">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Attachemnt Name</th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

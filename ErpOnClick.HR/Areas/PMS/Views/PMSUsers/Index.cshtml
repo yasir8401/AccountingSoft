@@ -1,0 +1,84 @@
+﻿@using ErpOnClick.DAL.Models
+@section TabName{
+    Users
+}
+@{
+    List<PmsCompany> companies = Model.companies;
+    var role = User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Role).Value;
+
+}
+
+
+<div class="card card-default card-outline">
+
+    <div class="card-header">
+        <h2 class="card-title">
+            Users
+        </h2>
+        <!-- tools box -->
+        <div class="card-tools">
+            <a href="~/PMS/PMSUsers/Edit" type="button" class="btn  btn-sm btn-primary">
+                <i class="fas fa-plus"></i> Add New
+            </a>
+        </div>
+        <!-- /. tools -->
+    </div>
+    <div class="card-footer pb-0 pt-2 text-sm">
+        <form id="frmSearch">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>Company </label>
+                        <select id="Company" name="Company" class="form-control" required>
+                            @if (role == "Super Admin")
+                            {
+                                <option value="" selected>All</option>
+                            }
+                            @foreach (var company in companies)
+                            {
+                                <option value="@company.CompanyId"> @company.CompanyName</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <button style="margin-top:29px" type="submit" class="btn btn-primary btn-block"> Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="card-body">
+        <div id="divList"></div>
+
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        $(function () {
+            $('#Forms').addClass("menu-open");
+            $('#Reports').removeClass("menu-open");
+            BindGrid();
+        });
+
+        $('#frmSearch').submit(function (e) {
+            e.preventDefault();
+            BindGrid();
+        })
+
+        function BindGrid() {
+
+            $('#divList').html('<h5 class="margin-0"><p><i class="fa fa-spinner fa-spin fa-fw"></i> Please wait while data is loading...</p></h5>');
+            $.ajax({
+                url: 'PMSUsers/_list',
+                data: $('#frmSearch').serialize(),
+                success: function (data) {
+                    $('#divList').html(data);
+                }
+            })
+        };
+
+    </script>
+}

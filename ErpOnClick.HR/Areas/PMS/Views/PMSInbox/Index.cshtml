@@ -1,0 +1,63 @@
+﻿
+@section TabName{
+    Inbox
+}
+
+<div class="card card-default card-outline">
+
+    <div class="card-header">
+        <h2 class="card-title">
+            Inbox
+        </h2>
+    </div>
+    <div class="card-footer pb-0 pt-2 text-sm">
+        <form id="frmSearch">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>Messages Type </label>
+                        <select id="Type" name="Type" class="form-control">
+                            <option value="All">All</option>
+                            <option value="Sent">Sent</option>
+                            <option value="Received">Received</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <button style="margin-top:29px" type="submit" class="btn btn-primary btn-block"> Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="card-body">
+        <div id="divList"></div>
+
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        $(function () {
+            BindGrid();
+        });
+
+        $('#frmSearch').submit(function (e) {
+            e.preventDefault();
+            BindGrid();
+        })
+
+        function BindGrid() {
+
+            $('#divList').html('<h5 class="margin-0"><p><i class="fa fa-spinner fa-spin fa-fw"></i> Please wait while data is loading...</p></h5>');
+            $.ajax({
+                url: 'PMSInbox/_list',
+                data: $('#frmSearch').serialize(),
+                success: function (data) {
+                    $('#divList').html(data);
+                }
+            })
+        };
+
+    </script>
+}

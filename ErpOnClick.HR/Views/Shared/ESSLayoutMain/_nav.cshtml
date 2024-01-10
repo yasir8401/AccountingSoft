@@ -1,0 +1,63 @@
+﻿@using ErpOnClick.ErpMain.Resources
+
+@inject LocService SharedLocalizer
+
+@{
+    string _baseUrl = Convert.ToString(ViewData["baseUrl"]);
+}
+
+@inject LocService SharedLocalizer
+
+
+
+<ul id="js-nav-menu" class="nav-menu">
+    <li class="active">
+        <a href="/ESS/ESSDashboard" title="Category" data-filter-tags="category">
+            <i class="fal fa-tachometer-alt"></i>
+            <span class="nav-link-text" data-i18n="nav.hr"> @SharedLocalizer.GetLocalizedHtmlString("Dashboard")</span>
+        </a>
+    </li>
+    <li>
+        <a href="#" title="Category" data-filter-tags="category">
+            <i class="fal fa-home"></i>
+            <span class="nav-link-text" data-i18n="nav.hr"> @SharedLocalizer.GetLocalizedHtmlString("Home")</span>
+        </a>
+        <ul>
+
+            <li><a href="~/ESS/Profile" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Employee Profile")</span></a></li>
+            <li><a href="~/ESS/EmpAttendances" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Attendance")</span></a></li>
+            <li><a href="~/ESS/EmpPaySlip" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Pay Slip")</span></a></li>
+        </ul>
+    </li>
+
+    <li>
+        <a href="#" title="Category" data-filter-tags="category">
+            <i class="fal fa-tasks"></i>
+            <span class="nav-link-text" data-i18n="nav.hr"> @SharedLocalizer.GetLocalizedHtmlString("General Requests")</span>
+        </a>
+        <ul>
+            <li><a href="~/ESS/TimeCorrectionRequest" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Time In/Out Correction Request")</span></a></li>
+            <li><a href="~/ESS/EmpLeaves" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Leave Request")</span></a></li>
+            <li><a href="~/ESS/ExpClaimsRequest" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Expense Claim Request")</span></a></li>
+            <li><a href="~/ESS/OverTimeRequest" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("OverTime Request")</span></a></li>
+            <li><a href="~/ESS/WeekendOvertimeRequest" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Weekend Overtime Request")</span></a></li>
+            <li><a href="~/ESS/JustificationLetterRequest" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Justification Letter Request")</span></a></li>
+
+        </ul>
+    </li>
+
+    <li class="active">
+        <a href="~/home/Index" title="Category" data-filter-tags="category">
+            <i class="fal fa-arrow-left"></i>
+            <span class="nav-link-text" data-i18n="nav.hr"> @SharedLocalizer.GetLocalizedHtmlString("Return")</span>
+        </a>
+    </li>
+
+    <li class="active ">
+        <a href="~/home/logout" title="Category" data-filter-tags="category">
+            <i class=" fal fa-sign-out"></i>
+            <span class="nav-link-text" data-i18n="nav.category">  @SharedLocalizer.GetLocalizedHtmlString("Logout")</span>
+        </a>
+    </li>
+
+</ul>

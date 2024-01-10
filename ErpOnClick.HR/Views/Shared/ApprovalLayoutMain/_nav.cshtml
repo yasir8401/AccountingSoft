@@ -1,0 +1,42 @@
+﻿@using ErpOnClick.ErpMain.Resources
+
+@inject LocService SharedLocalizer
+
+@{
+    string _baseUrl = Convert.ToString(ViewData["baseUrl"]);
+}
+
+@inject LocService SharedLocalizer
+
+
+
+<ul id="js-nav-menu" class="nav-menu">
+
+    <li>
+        <a href="#" title="Category" data-filter-tags="approvals">
+            <i class="fal fa-clipboard-list"></i>
+            <span class="nav-link-text" data-i18n="nav.approvals"> @SharedLocalizer.GetLocalizedHtmlString("Approvals")</span>
+        </a>
+        <ul>
+
+            <li><a href="~/Approvals/Inbox?status=007001" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Pending")</span></a></li>
+            <li><a href="~/Approvals/Inbox?status=007003" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Rejected")</span></a></li>
+            <li><a href="~/Approvals/Inbox?status=007002" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Approved")</span></a></li>
+        </ul>
+    </li>
+
+    <li class="active">
+        <a href="~/home/Index" title="Category" data-filter-tags="category">
+            <i class="fal fa-arrow-left"></i>
+            <span class="nav-link-text" data-i18n="nav.hr"> @SharedLocalizer.GetLocalizedHtmlString("Return")</span>
+        </a>
+    </li>
+
+    <li class="active ">
+        <a href="~/home/logout" title="Category" data-filter-tags="category">
+            <i class=" fal fa-sign-out"></i>
+            <span class="nav-link-text" data-i18n="nav.category">  @SharedLocalizer.GetLocalizedHtmlString("Logout")</span>
+        </a>
+    </li>
+
+</ul>

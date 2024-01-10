@@ -1,0 +1,123 @@
+﻿@using ErpOnClick.DAL.Models
+
+@section TabName{
+    Project Tasks
+}
+@{
+    List<PmsProjects> projects = Model.Projects;
+    var role = User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Role).Value;
+    bool dev = (role == "Developer");
+
+
+}
+<div class="card card-default card-outline">
+
+    <div class="card-header">
+        <h2 class="card-title">
+            Project Tasks
+        </h2>
+        <!-- tools box -->
+        <div class="card-tools">
+            <a href="~/PMS/PMSProjectTasks/Edit" type="button" class="btn  btn-sm btn-primary @(dev ? "disabled" : "")">
+                <i class="fas fa-plus"></i> Add New
+            </a>
+        </div>
+        <!-- /. tools -->
+    </div>
+    <div class="card-footer pb-0 pt-2 text-sm">
+        <form id="frmSearch">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>Project </label>
+                        <select id="Project" name="Project" class="form-control" required>
+                            @foreach (var project in projects)
+                            {
+                                <option value="@project.ProjectId"> @project.ProjectName</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Date From</label>
+                        <input type="text" id="DateFrom" name="DateFrom" class="form-control DatePicker" required>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Date To</label>
+                        <input type="text" id="DateTo" name="DateTo" class="form-control DatePicker" required>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select class="form-control" name="Status" id="Status">
+                            <option value="" selected>All</option>
+                            <option class="text-success" value="Complete">Completed</option>
+                            <option class="text-orange" value="InComplete">Incompleted</option>
+                            <option class="text-warning" value="Pending">Pending</option>
+                            <option class="text-danger" value="Rejected">Cancelled</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <button style="margin-top:29px" type="submit" class="btn btn-primary btn-block"> Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="card-body">
+        <div id="divList"></div>
+
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        $(function () {
+            $('#Forms').addClass("menu-open");
+            $('#Reports').removeClass("menu-open");
+
+            var startdate = new Date();
+            var enddate = new Date();
+            startdate.setDate(startdate.getDate() - 30);
+            enddate.setDate(enddate.getDate() + 30);
+            var startdatedd = String(startdate.getDate()).padStart(2, '0');
+            var startdatemm = String(startdate.getMonth() + 1).padStart(2, '0')
+            var startdateyyyy = startdate.getFullYear();
+            var enddatedd = String(enddate.getDate()).padStart(2, '0');
+            var enddatemm = String(enddate.getMonth() + 1).padStart(2, '0')
+            var enddateyyyy = enddate.getFullYear();
+            var start = startdateyyyy + '-' + startdatemm + '-' + startdatedd;
+            today = enddateyyyy + '-' + enddatemm + '-' + enddatedd;
+            $('#DateFrom').val(start);
+            $('#DateTo').val(today);
+            BindGrid();
+        });
+
+        //$('#frmSearch').find('input, select').change(() => {
+        //    BindGrid();
+        //});
+
+        $('#frmSearch').submit(function (e) {
+            e.preventDefault();
+            BindGrid();
+        })
+
+        function BindGrid() {
+            $('#divList').html('<h5 class="margin-0"><p><i class="fa fa-spinner fa-spin fa-fw"></i> Please wait while data is loading...</p></h5>');
+            $.ajax({
+                url: 'PMSProjectTasks/_list',
+                data: $('#frmSearch').serialize(),
+                success: function (data) {
+                    $('#divList').html(data);
+                }
+            })
+        };
+
+    </script>
+}

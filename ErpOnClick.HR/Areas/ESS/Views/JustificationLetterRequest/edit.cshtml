@@ -1,0 +1,324 @@
+﻿@using ErpOnClick.DAL.Models
+@using ErpOnClick.ErpMain.Models
+@using ErpOnClick.ErpMain.Resources
+@inject LocService SharedLocalizer
+
+
+@{
+    IList<Branch> branchList = Model.branchList;
+    IList<Company> companyList = Model.companyList;
+    IList<Emp> employeesList = Model.employeesList;
+
+    List<Lookups> RequestStatus = Model.RequestStatus;
+    List<Lookups> RequestType = Model.RequestType;
+
+
+    JustificationLetter JustificationLetterDetail = Model.JustificationLetterDetail;
+    bool isEdit = (JustificationLetterDetail != null);
+}
+
+
+
+<form id="frmEdit" role="form" enctype="multipart/form-data">
+    <input type="hidden" id="ACTION_TYPE" name="ACTION_TYPE" value="@(isEdit ? "update" : "save")" />
+    <input type="hidden" id="RecId" name="RecId" class="form-control" value="@(JustificationLetterDetail != null ? JustificationLetterDetail.RecId : 0)" @(isEdit ? "readonly" : "") min="3" maxlength="3">
+    <input type="hidden" id="CompanyId" name="CompanyId" class="form-control" value="@(JustificationLetterDetail != null ? JustificationLetterDetail.CompanyId : 0)">
+    <input type="hidden" id="BranchId" name="BranchId" class="form-control" value="@(JustificationLetterDetail != null ? JustificationLetterDetail.BranchId : 0)">
+
+    <div class="card card-default card-outline col-lg-8">
+        <div class="card-header">
+            <h2 class="card-title">
+                @SharedLocalizer.GetLocalizedHtmlString("Justification Letter Request Detail")
+            </h2>
+            <!-- tools box -->
+            <div class="card-tools float-right">
+                @if (ViewBag.Code != 101)
+                {
+                    <button type="submit" class="btn  btn-sm btn-primary" @(JustificationLetterDetail != null && JustificationLetterDetail.ApprovalStatus != null ? "hidden" : "")>
+                        <i class="fal fa-save fa-fw"></i> @SharedLocalizer.GetLocalizedHtmlString("Save Justification Letter Request")
+                    </button>
+                    <a id="postBtn" @(!isEdit ? "hidden" : "" ) class="btn  btn-sm btn-success" @(JustificationLetterDetail != null && JustificationLetterDetail.ApprovalStatus != null ? "hidden" : "")>
+                        <i class="fal fa-save fa-fw"></i> @SharedLocalizer.GetLocalizedHtmlString("Submit for Approval")
+                    </a>
+                }
+                <a href="~/ESS/JustificationLetterRequest" type="button" class="btn  btn-sm btn-default">
+                    <i class="fal fa-arrow-left fa-fw"></i> @SharedLocalizer.GetLocalizedHtmlString("Return")
+                </a>
+            </div>
+            <!-- /. tools -->
+        </div>
+        <div class="card-body">
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>@SharedLocalizer.GetLocalizedHtmlString("Employee")</label>
+                        <select id="EmpId" name="EmpId" class="form-control" required>
+                            <option selected></option>
+                            @foreach (var item in employeesList)
+                            {
+                                <option value="@item.EmpId" selected>
+                                    @(item.FirstNameEn + " " + item.FatherNameEn)
+                                </option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group" @(JustificationLetterDetail != null && JustificationLetterDetail.ApprovalStatus != null ? "" : "hidden")>
+                        <label>@SharedLocalizer.GetLocalizedHtmlString("Request Status")</label>
+                        <select id="ApprovalStatus" name="ApprovalStatus" class="form-control" required disabled>
+                            <option selected></option>
+                            @foreach (var item in RequestStatus)
+                            {
+                                <option value="@item.Code" @(JustificationLetterDetail != null && JustificationLetterDetail.ApprovalStatus == item.Code ? "selected" : "")>
+                                    @(item.LookupNameEn)
+                                </option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>@SharedLocalizer.GetLocalizedHtmlString("Requested Date") </label>
+                        <input type="text" autocomplete="off" id="RequestedDate" @(JustificationLetterDetail != null && JustificationLetterDetail.ApprovalStatus != null ? "disabled" : "") name="RequestedDate" class="form-control DatePicker1" value="@(JustificationLetterDetail != null && JustificationLetterDetail.RequestedDate !=null ? Convert.ToDateTime(JustificationLetterDetail.RequestedDate).ToString("dd-MMM-yyyy") : "")">
+                    </div>
+                </div>
+                <div class="col-sm-6" hidden>
+                    <div class="form-group">
+                        <label>@SharedLocalizer.GetLocalizedHtmlString("Approval Date") </label>
+                        <input type="text" disabled id="ApprovalDate" name="ApprovalDate" class="form-control DatePicker" value="@(JustificationLetterDetail != null && JustificationLetterDetail.ApprovalDate !=null ? Convert.ToDateTime(JustificationLetterDetail.ApprovalDate).ToString("dd-MMM-yyyy") : "")">
+
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>@SharedLocalizer.GetLocalizedHtmlString("Time In")</label>
+                        <input @(JustificationLetterDetail != null && JustificationLetterDetail.ApprovalStatus != null ? "disabled" : "") id="TimeFrom" value="@(JustificationLetterDetail != null && JustificationLetterDetail.TimeFrom !=null ? JustificationLetterDetail.TimeFrom : null)" name="TimeFrom" type="time" step="any" class="form-control input-sm text-right" min="0">
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>@SharedLocalizer.GetLocalizedHtmlString("Time Out")</label>
+                        <input @(JustificationLetterDetail != null && JustificationLetterDetail.ApprovalStatus != null ? "disabled" : "") id="TimeTo" value="@(JustificationLetterDetail != null && JustificationLetterDetail.TimeTo !=null ?JustificationLetterDetail.TimeTo : null)" name="TimeTo" type="time" step="any" class="form-control input-sm text-right" min="0">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <div class="card card-default card-outline col-lg-8">
+        <div class="card-header">
+            <h2 class="card-title">
+                @SharedLocalizer.GetLocalizedHtmlString("Justification")
+            </h2>
+        </div>
+        <div class="card-body p-2">
+            <textarea rows="3" @(JustificationLetterDetail != null && JustificationLetterDetail.ApprovalStatus != null ? "disabled" : "") id="Reason" name="Reason" class="form-control " style="border:none" placeholder="Enter Reason here...">@(JustificationLetterDetail != null ? JustificationLetterDetail.Reason : "")</textarea>
+        </div>
+    </div>
+    <div class="card card-default card-outline col-lg-8" style="display:none">
+
+        <div class="card-header">
+            <h2 class="card-title">
+                @SharedLocalizer.GetLocalizedHtmlString("Organization Details")
+            </h2>
+        </div>
+        <div class="card-body">
+
+            <div class="row">
+                <div class="col-sm-6 ">
+                    <div class="form-group">
+                        <label>@SharedLocalizer.GetLocalizedHtmlString("Company")</label>
+                        <select id="CompanyId" name="CompanyId" class="form-control">
+                            <option></option>
+                            @foreach (var item in companyList)
+                            {
+                                <option value="@item.CompanyId" @(JustificationLetterDetail != null && JustificationLetterDetail.CompanyId == item.CompanyId ? "selected" : "")>
+                                    @item.CoNameEn
+                                </option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-6 ">
+                    <div class="form-group">
+                        <label>@SharedLocalizer.GetLocalizedHtmlString("Branch")</label>
+                        <select id="BranchId" name="BranchId" class="form-control">
+                            <option></option>
+                            @if (isEdit)
+                            {
+                                @foreach (var item in branchList)
+                                {
+                                    <option value="@item.BranchId" @(JustificationLetterDetail != null && JustificationLetterDetail.BranchId == item.BranchId ? "selected" : "")>
+                                        @item.BranchNameEn
+                                    </option>
+                                }
+                            }
+
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+
+
+
+
+@section scripts{
+
+    <script>
+        var applicationName = getApplicationName();
+        var flag = false;
+        $(function () {
+
+            $('.DatePicker1').datepicker({
+                format: 'dd-M-yyyy',
+                autoclose: true,
+                endDate: new Date(),
+                startDate: '-30d'
+            });
+
+            $('#CompanyId').change(function () {
+
+                var id = $('#CompanyId').val();
+
+                $.ajax({
+                    url: applicationName + "Ajax/BranchCascading",
+                    async: false,
+                    type: "POST",
+                    data: { id: id },
+                    success: function (data) {
+
+                        var item = '';
+
+                        $.each(data.result, function (i, product) {
+
+                            item += "<option value='" + product.branchId + "'>" + product.branchNameEn + "</option>";
+                        });
+
+                        $("#BranchId").html(item);
+
+                    }
+                });
+
+            });
+
+
+
+        });
+
+
+
+        $("#RequestedDate").change(function () {
+            var requestedDate = $('#RequestedDate').val();
+            debugger;
+            if (flag) {
+                $.ajax({
+                    url: applicationName + "ESS/JustificationLetterRequest/GetCurrentAttendance",
+                    async: false,
+                    type: "POST",
+                    data: { requestedDate },
+                    success: function (data) {
+
+                        if (data != null && data.timeIn != "" && data.timeOut != "") {
+                            $("#OldTimeFrom").val(data.timeIn);
+                            $("#OldTimeTo").val(data.timeOut);
+                            $("#TimeFrom").val(data.timeIn);
+                            $("#TimeTo").val(data.timeOut);
+                        }
+                        else {
+                            $("#OldTimeFrom").val(null);
+                            $("#OldTimeTo").val(null);
+                            $("#TimeFrom").val(null);
+                            $("#TimeTo").val(null);
+                        }
+
+                    }
+                });
+            }
+            flag = true;
+        });
+
+        $('#frmEdit').on('submit', function (e) {
+            e.preventDefault();
+            var actionType = $('#ACTION_TYPE').val();
+
+            confirmAction('Confirm ?', 'Are you sure you want to save changes ?', 'info', 'Yes', 'No').then(function (result) {
+                if (result.value == true) {
+
+                    var params = $('#frmEdit').serialize();
+                    var formEl = document.forms.frmEdit;
+                    var formData = new FormData(formEl);
+
+                    $.ajax({
+                        url: applicationName + "ESS/JustificationLetterRequest/" + actionType,
+                        type: "POST",
+                        data: formData ? formData : params,
+                        async: false,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        success: function (data) {
+                            if (data.result.isError != true) {
+                                showMsg('Saved !', 'Record has been saved !', 'success');
+                                setTimeout(function () {
+                                    window.location = applicationName + 'ESS/JustificationLetterRequest';
+                                }, 500);
+                            }
+                            else if (data.result.msg != '') {
+                                showMsg('Save Failed !', data.result.msg, 'error');
+                            }
+                            else {
+                                showMsg('Save Failed !', 'Something went wrong. Try again', 'error');
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        $('#postBtn').click(function () {
+
+            confirmAction('Confirm ?', 'Are you sure you want to Post  ?', 'info', 'Yes', 'No').then(function (result) {
+                if (result.value == true) {
+                    var id = $('#RecId').val();
+
+                    $.ajax({
+                        url: applicationName + "ESS/JustificationLetterRequest/Post",
+                        async: false,
+                        type: "POST",
+                        data: { id: id },
+                        success: function (data) {
+                            if (data.result.isError != true) {
+                                showMsg('Saved !', 'Record has been Posted !', 'success');
+                                setTimeout(function () {
+                                    debugger;
+                                    var id = data.result.scalerVal;
+                                    window.location = applicationName + 'ESS/JustificationLetterRequest/Edit?id=' + id;
+                                }, 500);
+                            }
+                            else if (data.result.msg != '') {
+                                showMsg('Save Failed !', data.result.msg, 'error');
+                            }
+                            else {
+                                showMsg('Save Failed !', 'Something went wrong. Try again', 'error');
+                            }
+                        }
+                    });
+
+                }
+            });
+        });
+
+    </script>
+
+}

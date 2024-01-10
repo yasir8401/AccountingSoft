@@ -1,0 +1,120 @@
+﻿@using ErpOnClick.DAL.Models
+@using ErpOnClick.ErpMain.Resources
+@inject LocService SharedLocalizer
+
+@{
+    List<EmpEvaluation> EvaluationList = Model.evaluationList;
+}
+
+
+<div class="table-responsive pb-2 ">
+    <table id="dtList" class="table table-hover table-condensed " style="display:none">
+        <thead class="text-sm">
+            <tr>
+                <th> @SharedLocalizer.GetLocalizedHtmlString("Employee Name") </th>
+                <th> @SharedLocalizer.GetLocalizedHtmlString("Evaluation Type") </th>
+                <th> @SharedLocalizer.GetLocalizedHtmlString("Evaluation Year") </th>
+                <th> @SharedLocalizer.GetLocalizedHtmlString("Date From") </th>
+                <th> @SharedLocalizer.GetLocalizedHtmlString("Date To") </th>
+                <th> @SharedLocalizer.GetLocalizedHtmlString("Remarks") </th>
+                <th> @SharedLocalizer.GetLocalizedHtmlString("Attachment") </th>
+                <th> @SharedLocalizer.GetLocalizedHtmlString("Approval Status") </th>
+                <th> @SharedLocalizer.GetLocalizedHtmlString("Approval Date") </th>
+            </tr>
+        </thead>
+        <tfoot style="display:table-row-group">
+            <tr class="text-center">
+                <th> Employee Name </th>
+                <th> Evaluation Type </th>
+                <th> Evaluation Year </th>
+                <th> Date From </th>
+                <th> Date To </th>
+                <th> Remarks </th>
+                <th> Attachment </th>
+                <th> Approval Status </th>
+                <th> Approval Date </th>
+            </tr>
+        </tfoot>
+        <tbody>
+            @foreach (var item in EvaluationList)
+            {
+
+            <tr class="text-center">
+
+                <td class="">@(item.Emp.FirstNameEn + item.Emp.FamilyNameEn) </td>
+                <td class="">@(item.EvaluationTypeId == "001" ? "Probationary" : item.EvaluationTypeId == "002" ? "Yearly" : item.EvaluationTypeId == "003" ? "Half Yearly" : "Quarterly" ) </td>
+                <td class="">@item.EvaluationYear </td>
+                @*<td class="text-left">@(item.EvaluationQuarter == "0" ? "" : item.EvaluationQuarter) </td>*@
+                <td>@(item.DateFrom != null ? Convert.ToDateTime(item.DateFrom).ToString("dd-MMM-yyyy") : "")</td>
+                <td>@(item.DateTo != null ? Convert.ToDateTime(item.DateTo).ToString("dd-MMM-yyyy") : "")</td>
+                <td class="">@item.Remarks </td>
+                @*<td><a href="~/Files/@item.Attachment" download="">@SharedLocalizer.GetLocalizedHtmlString("Download Evaluation Form")</a></td>*@
+
+                <td class="text-center padding-5">
+                    <a href="~/Files/@item.Attachment" class="btn btn-default btn-block  btn-xs "><i class="fal fa-paperclip"></i></a>
+                </td>
+
+                <td align="center">
+                    @if (item.ApprovalStatusNavigation != null && item.ApprovalStatusNavigation.LookupNameEn == "Rejected")
+                    {
+                        <label class="btnwidth p-1 badge badge-danger mb-0">Rejected</label>
+
+                    }
+                    else if (item.ApprovalStatusNavigation != null && item.ApprovalStatusNavigation.LookupNameEn == "Approved")
+                    {
+                        <label class="btnwidth p-1 badge badge-success mb-0">Approved</label>
+                    }
+                    else if (item.ApprovalStatusNavigation != null && item.ApprovalStatusNavigation.LookupNameEn == "Pending")
+                    {
+                        <label class="btnwidth p-1 badge badge-warning mb-0">Pending</label>
+                    }
+                    else
+                    {
+
+                    }
+                </td>
+                <td>@(item.ApprovalDate != null ? Convert.ToDateTime(item.ApprovalDate).ToString("dd-MMM-yyyy") : "")</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<script>
+    $(function () {
+
+        _initDatatable('#dtList');
+        $('#dtList').show();
+    });
+    var applicationName = getApplicationName();
+
+    function deleteItem(id) {
+        confirmAction('Confirm ?', 'Are you sure you want to save changes ?', 'info', 'Yes', 'No').then(function (result) {
+            if (result.value == true) {
+
+                $.ajax({
+                    url: applicationName + "HumanResource/EmpExperience/delete",
+                    async: false,
+                    type: "POST",
+                    data: { id },
+                    success: function (data) {
+                        if (data.result.isError != true) {
+                            showMsg('Deleted !', 'Record has been deleted !', 'success');
+                            setTimeout(function () {
+                                window.location = applicationName + 'HumanResource/EmpExperience';
+                            }, 500);
+                        }
+                        else if (data.result.msg != '') {
+                            showMsg('Delete Failed !', data.result.msg, 'error');
+                        }
+                        else {
+                            showMsg('Delete Failed !', 'Something went wrong. Try again', 'error');
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+</script>

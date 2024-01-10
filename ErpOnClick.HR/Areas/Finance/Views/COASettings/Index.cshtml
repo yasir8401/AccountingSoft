@@ -1,0 +1,235 @@
+﻿@using ErpOnClick.DAL.Models
+@using ErpOnClick.ErpMain.Resources
+@using ErpOnClick.ErpMain.ViewModel
+
+@inject LocService SharedLocalizer
+@{
+    List<Accounts> Accounts = Model.Accounts;
+    List<AccountTypes> AccountTypes = Model.AccountTypes;
+    List<importData> importedData = Model.importedData;
+    List<importData> importedDatalvl1 = importedData.Where(c => c.Level == "1").ToList();
+    List<importData> importedDatalvl2 = importedData.Where(c => c.Level == "2").ToList();
+    List<importData> importedDatalvl3 = importedData.Where(c => c.Level == "3").ToList();
+    List<importData> importedDatalvl4 = importedData.Where(c => c.Level == "4").ToList();
+    List<importData> importedDatalvl5 = importedData.Where(c => c.Level == "5").ToList();
+    var childnode = 0;
+    var node = 0;
+
+
+}
+
+<div class="card card-default card-outline col-lg-8">
+    <div class="card-header">
+        <h2 class="card-title">
+            @SharedLocalizer.GetLocalizedHtmlString("Chart of Account Level - Detail")
+        </h2>
+    </div>
+    <div class="card-body">
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label>@SharedLocalizer.GetLocalizedHtmlString("COA Levels")</label>
+                    <select id="COALevel" name="COALevel" class="form-control select" required>
+                        <option value=""></option>
+                        @for (int count = 3; count <= 5; count++)
+                        {
+                            <option value="@count">@count</option>
+                        }
+
+                    </select>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="row">
+            <div class="card-footer pb-0 pt-2 text-sm">
+                <div id="jstree">
+                    <ul>
+                        @foreach (var head in Accounts.Where(c => c.ParentAccountId == null))
+                        {
+                            <li>
+                                <span class="head">
+                                    @head.AccountNameEn -@head.AccountCode
+                                </span>
+                                <ul>
+                                    @foreach (var subhead in Accounts.Where(c => c.ParentAccountId == head.AccountId))
+                                    {
+                                        childnode = childnode + 1;
+                                        <li id="child_node_@childnode">
+                                            @subhead.AccountNameEn -@subhead.AccountCode
+                                            @*<span class="text-right">
+                                                    <a href="javascript:void(0)" data-toggle="tooltip" title="Edit" onclick="edit('@subhead.AccountId')" class="btn btn-default btn-sm"><i class="fa fa-edit text-dark"></i></a>
+                                                </span>*@
+                                            <ul>
+                                                @foreach (var lower in Accounts.Where(c => c.ParentAccountId == subhead.AccountId))
+                                                {
+                                                    <li class="last" id="last_@lower.AccountId">
+
+                                                        @lower.AccountNameEn -@lower.AccountCode
+                                                        <span class="text-right">
+                                                            <a href="javascript:void(0)" data-toggle="tooltip" title="Delete" onclick="deleteitem('@subhead.AccountId')" class="btn btn-default btn-sm"><i class="fal fa-trash text-danger"></i></a>
+                                                            <a href="javascript:void(0)" data-toggle="tooltip" title="Edit" onclick="edit('@lower.AccountId')" class="btn btn-default btn-sm"><i class="fal fa-edit text-dark"></i></a>
+                                                        </span>
+                                                    </li>
+
+                                                }
+                                            </ul>
+                                        </li>
+
+
+
+                                    }
+                                </ul>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<style>
+    .accent-orange .btn-link, .accent-orange a:not(.dropdown-item):not(.btn-app):not(.nav-link):not(.brand-link):not(.page-link):not(.btn) {
+        color: #6d8888 !important;
+    }
+
+    #jstree {
+        font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    }
+
+    .jstree-default .jstree-node {
+        min-height: 35px !important;
+        line-height: 35px;
+        margin-left: 24px;
+        min-width: 24px;
+    }
+
+    .head {
+        /*font-style: normal;
+        font-weight: bold;
+        letter-spacing: 1px;*/
+        font-size: 13px;
+    }
+
+    /* The customcheck */
+    .customcheck {
+        display: block;
+        position: relative;
+        padding-left: 35px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        font-size: 22px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+        /* Hide the browser's default checkbox */
+        .customcheck input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+    /* Create a custom checkbox */
+    .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 25px;
+        width: 25px;
+        background-color: #dbefef;
+        border-radius: 5px;
+    }
+
+    /* On mouse-over, add a grey background color */
+    .customcheck:hover input ~ .checkmark {
+        background-color: #ccc;
+    }
+
+    /* When the checkbox is checked, add a blue background */
+    .customcheck input:checked ~ .checkmark {
+        background-color: #84ceeb;
+        border-radius: 5px;
+    }
+
+    /* Create the checkmark/indicator (hidden when not checked) */
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+
+    /* Show the checkmark when checked */
+    .customcheck input:checked ~ .checkmark:after {
+        display: block;
+    }
+
+    /* Style the checkmark/indicator */
+    .customcheck .checkmark:after {
+        left: 9px;
+        top: 5px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+
+    #jstree ul li .jstree-anchor {
+        width: 98%;
+    }
+
+        #jstree ul li .jstree-anchor .text-right {
+            float: right;
+        }
+
+    .jstree-default .jstree-wholerow {
+        height: 29px !important;
+    }
+
+    .jstree li.last > a > .jstree-icon {
+        background-image: none !important;
+    }
+
+        .jstree li.last > a > .jstree-icon::before {
+            font-family: 'Font Awesome 5 Pro' !important;
+            font-weight: 900 !important;
+            content: "\f1ec" !important;
+            font-style:normal !important;
+        }
+</style>
+@section scripts{
+
+    <script>
+        $(function () {
+            $(".loading").fadeOut(1500, function () {
+                $("#div").fadeIn(500);
+            });
+
+            $('#Accli').addClass("menu-open");
+            $('#Reportsli').removeClass("menu-open");
+            $('#Statementsli').removeClass("menu-open");
+            $('#AccPli').removeClass("menu-open");
+            $('#AccRli').removeClass("menu-open");
+            $('#Setupli').removeClass("menu-open");
+
+            $('#jstree').jstree({
+                "plugins": ["wholerow"]
+            });
+        });
+
+
+        $('#jstree').on("changed.jstree", function (e, data) {
+            console.log(data.selected);
+        });
+    </script>
+}

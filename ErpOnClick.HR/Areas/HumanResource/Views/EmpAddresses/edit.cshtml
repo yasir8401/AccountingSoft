@@ -1,0 +1,533 @@
+﻿@using ErpOnClick.DAL.Models
+@using ErpOnClick.ErpMain.Resources
+@inject LocService SharedLocalizer
+
+@{
+    IList<Branch> branchList = Model.branchList;
+    IList<Company> companyList = Model.companyList;
+    IList<Emp> empList = Model.empList;
+
+    IList<Lookups> countryList = Model.countryList;
+    IList<Lookups> citiyList = Model.citiyList;
+
+    var empId = Model.empId;
+    Emp empDetails = Model.empDetails;
+
+    EmpAddresses EmpAddressesDetails = Model.EmpAddressesDetails;
+    bool isEdit = (EmpAddressesDetails != null);
+}
+
+
+
+<form id="frmEdit" role="form" enctype="multipart/form-data">
+    <input type="hidden" id="ACTION_TYPE" name="ACTION_TYPE" value="@(isEdit ? "update" : "save")" />
+    <input type="hidden" id="EmpAddressId" name="EmpAddressId" class="form-control" value="@(EmpAddressesDetails != null ? EmpAddressesDetails.EmpAddressId : 0)" @(isEdit ? "readonly" : "") min="3" maxlength="3">
+    <input type="hidden" id="CompanyId" name="CompanyId" class="form-control" value="@(EmpAddressesDetails != null ? EmpAddressesDetails.CompanyId : 0)">
+    <input type="hidden" id="BranchId" name="BranchId" class="form-control" value="@(EmpAddressesDetails != null ? EmpAddressesDetails.BranchId : 0)">
+
+    <div class="card card-default card-outline col-lg-12">
+        <div class="card-header p-0 border-bottom-0">
+            <div class="card" style="background-color: #496b6a">
+            </div>
+            <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
+                @*<li class="nav-item">
+                        <a class="nav-link" onclick="navigation('@empId')" href="javascript:void(0)"><i class="fa fa-info"></i> @SharedLocalizer.GetLocalizedHtmlString("General Info")</a>
+                    </li>*@
+                @Html.Partial("/Areas/HumanResource/Views/Emp/_tabsPartial.cshtml", empDetails)
+
+            </ul>
+        </div>
+        <div class="card-header">
+            <h2 class="card-title">
+                @SharedLocalizer.GetLocalizedHtmlString("Details")
+            </h2>
+            <!-- tools box -->
+            <div class="card-tools float-right">
+                <button type="submit" class="btn  btn-sm btn-primary">
+                    <i class="fal fa-save fa-fw"></i>@SharedLocalizer.GetLocalizedHtmlString("Save")
+                </button>
+                <a href="~/HumanResource/empaddresses/emp/@empId" type="button" class="btn  btn-sm btn-default">
+                    <i class="fal fa-arrow-left fa-fw"></i>@SharedLocalizer.GetLocalizedHtmlString("Return")
+                </a>
+            </div>
+            <!-- /. tools -->
+        </div>
+        <div class="card-body">
+
+            <div class="row">
+                <div class="col-sm-3 ">
+                    <div class="form-group">
+                        <label>@SharedLocalizer.GetLocalizedHtmlString("Employee")</label>
+                        <select id="EmpId" name="EmpId" class="form-control" readonly>
+
+                            @foreach (var item in empList)
+                            {
+                                <option value="@item.EmpId" @(EmpAddressesDetails != null && EmpAddressesDetails.EmpId == item.EmpId ? "selected" : "")>
+                                    @(item.FirstNameEn + " " + item.FatherNameEn + " " + item.GrandNameEn + " " + item.FamilyNameEn)
+                                </option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>@SharedLocalizer.GetLocalizedHtmlString("Zip Code")</label>
+                        <input type="text" id="ZipCode" name="ZipCode" class="form-control" value="@(EmpAddressesDetails!=null?EmpAddressesDetails.ZipCode: null)" maxlength="10">
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>@SharedLocalizer.GetLocalizedHtmlString("Po-Box")</label>
+                        <input type="text" id="PoBox" name="PoBox" class="form-control" value="@(EmpAddressesDetails!=null?EmpAddressesDetails.PoBox: null)"
+                               maxlength="20">
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>@SharedLocalizer.GetLocalizedHtmlString("City")</label>
+                        <input type="text" id="CityName" name="CityName" class="form-control" value="@(EmpAddressesDetails!=null?EmpAddressesDetails.CityName: null)" maxlength="30">
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>@SharedLocalizer.GetLocalizedHtmlString("Building") </label>
+                        <input type="text" id="BuildingNo" name="BuildingNo" class="form-control" value="@(EmpAddressesDetails!=null?EmpAddressesDetails.BuildingNo: null)"
+                               maxlength="20">
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>@SharedLocalizer.GetLocalizedHtmlString("Street") </label>
+                        <input type="text" id="StreetName" name="StreetName" class="form-control" value="@(EmpAddressesDetails!=null?EmpAddressesDetails.StreetName: null)"
+                               maxlength="100">
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>@SharedLocalizer.GetLocalizedHtmlString("District") </label>
+                        <input type="text" id="DistrictName" name="DistrictName" class="form-control" value="@(EmpAddressesDetails!=null?EmpAddressesDetails.DistrictName: null)"
+                               maxlength="100">
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>@SharedLocalizer.GetLocalizedHtmlString("Additional")</label>
+                        <input type="text" id="AdditionalNo" name="AdditionalNo" class="form-control" value="@(EmpAddressesDetails!=null?EmpAddressesDetails.AdditionalNo: null)"
+                               maxlength="10">
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>@SharedLocalizer.GetLocalizedHtmlString("Apartment")</label>
+                        <input type="text" id="AppartmentNo" name="AppartmentNo" class="form-control" value="@(EmpAddressesDetails!=null?EmpAddressesDetails.AppartmentNo: null)"
+                               maxlength="10">
+                    </div>
+                </div>
+
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>@SharedLocalizer.GetLocalizedHtmlString("Phone No")</label>
+                        <input type="text" id="PhoneNo" name="PhoneNo" class="form-control" value="@(EmpAddressesDetails!=null?EmpAddressesDetails.PhoneNo: null)"
+                               maxlength="16">
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>@SharedLocalizer.GetLocalizedHtmlString("Home Phone No")</label>
+                        <input type="text" id="HomePhone" name="HomePhone" class="form-control" value="@(EmpAddressesDetails!=null?EmpAddressesDetails.HomePhone: null)"
+                               maxlength="16">
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>@SharedLocalizer.GetLocalizedHtmlString("Work Phone No")</label>
+                        <input type="text" id="WorkPhone" name="WorkPhone" class="form-control" value="@(EmpAddressesDetails!=null?EmpAddressesDetails.WorkPhone: null)"
+                               maxlength="16">
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>@SharedLocalizer.GetLocalizedHtmlString("Work Phone No Ex")</label>
+                        <input type="text" id="WorkPhoneEx" name="WorkPhoneEx" class="form-control" value="@(EmpAddressesDetails!=null?EmpAddressesDetails.WorkPhoneEx: null)"
+                               maxlength="10">
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>@SharedLocalizer.GetLocalizedHtmlString("Fax")</label>
+                        <input type="text" id="FaxNo" name="FaxNo" class="form-control" value="@(EmpAddressesDetails!=null?EmpAddressesDetails.FaxNo: null)"
+                               maxlength="50">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="card card-default card-outline col-lg-12">
+        <div class="card-header">
+            <h2 class="card-title">
+                @SharedLocalizer.GetLocalizedHtmlString("More Details")
+            </h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <div class="">
+                            <label class="col-md-12">@SharedLocalizer.GetLocalizedHtmlString("Primary Address")</label>
+                            <select id="IsPrimary" name="IsPrimary" class="form-control" required>
+
+                                <option value="True" @(EmpAddressesDetails != null && EmpAddressesDetails.IsPrimary != null ? (Convert.ToBoolean(EmpAddressesDetails.IsPrimary) ? "selected" : "") : "")>Yes</option>
+                                <option value="False" @(EmpAddressesDetails != null && EmpAddressesDetails.IsPrimary != null ? (Convert.ToBoolean(EmpAddressesDetails.IsPrimary) ? "" : "selected") : "")>No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 ">
+                    <div class="form-group">
+                        <label>@SharedLocalizer.GetLocalizedHtmlString("City")</label>
+                        <input type="text" id="CityId" name="CityId" class="form-control" value="@(EmpAddressesDetails!=null?EmpAddressesDetails.CityId: null)"
+                               maxlength="30">
+
+                        @*<select id="CityId" name="CityId" class="form-control">
+
+                                @foreach (var item in citiyList)
+                                {
+                                    <option value="@item.Code" @(EmpAddressesDetails != null && EmpAddressesDetails.CityId == item.Code ? "selected" : "")>
+                                        @item.LookupNameEn
+                                    </option>
+                                }
+                            </select>*@
+                    </div>
+                </div>
+                <div class="col-sm-3 ">
+                    <div class="form-group">
+                        <label>@SharedLocalizer.GetLocalizedHtmlString("Birth Place")</label>
+                        <input type="text" id="CountryId" name="CountryId" class="form-control" value="@(EmpAddressesDetails!=null?EmpAddressesDetails.CountryId: null)"
+                               maxlength="50">
+
+                        @*<select id="CountryId" name="CountryId" class="form-control">
+
+                                @foreach (var item in countryList)
+                                {
+                                    <option value="@item.Code" @(EmpAddressesDetails != null && EmpAddressesDetails.CountryId == item.Code ? "selected" : "")>
+                                        @item.LookupNameEn
+                                    </option>
+                                }
+                            </select>*@
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>@SharedLocalizer.GetLocalizedHtmlString("Home Country Identity Number")</label>
+                        <input type="text" id="HomeCountryIdentity" name="HomeCountryIdentity" class="form-control" value="@(EmpAddressesDetails!=null?EmpAddressesDetails.HomeCountryIdentity: null)">
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="card card-outline card-outline col-lg-12">
+        <div class="card-header">
+            <h3 class="card-title">
+                @SharedLocalizer.GetLocalizedHtmlString("Address Details")
+            </h3>
+
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body pad">
+            <div class="mb-3">
+                <textarea id="AddressDetail" rows="3" name="AddressDetail" maxlength="150"
+                          style="width: 100%; height: 100px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">@(EmpAddressesDetails != null? EmpAddressesDetails.AddressDetail : "")</textarea>
+            </div>
+
+        </div>
+    </div>
+    <div class="card card-outline card-outline col-lg-12" style="display:none">
+        <div class="card-header">
+            <h3 class="card-title">
+                @SharedLocalizer.GetLocalizedHtmlString("Organization Details")
+            </h3>
+
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body pad">
+            <div class="row">
+
+                <div class="col-sm-6 ">
+                    <div class="form-group">
+                        <label>@SharedLocalizer.GetLocalizedHtmlString("Company")</label>
+                        <select id="CompanyId" name="CompanyId" class="form-control">
+                            <option></option>
+                            @foreach (var item in companyList)
+                            {
+                                <option value="@item.CompanyId" @(EmpAddressesDetails != null && EmpAddressesDetails.CompanyId == item.CompanyId ? "selected" : "")>
+                                    @item.CoNameEn
+                                </option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-6 ">
+                    <div class="form-group">
+                        <label>@SharedLocalizer.GetLocalizedHtmlString("Branch")</label>
+                        <select id="BranchId" name="BranchId" class="form-control">
+                            <option></option>
+                            @if (isEdit)
+                            {
+                                @foreach (var item in branchList)
+                                {
+                                    <option value="@item.BranchId" @(EmpAddressesDetails != null && EmpAddressesDetails.BranchId == item.BranchId ? "selected" : "")>
+                                        @item.BranchNameEn
+                                    </option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</form>
+
+
+
+
+
+@section scripts{
+    <script src="~/lib/jquery-validation/dist/additional-methods.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script>
+        var applicationName = getApplicationName();
+
+        $(function () {
+            //$("#tabAddress-tab").addClass("nav-link active");
+            $("#tabAddress-tab").css("background-color", "#496b6a");
+            $("#tabAddress-tab").css("color", "white");
+
+            $('#CompanyId').change(function () {
+
+                var id = $('#CompanyId').val();
+
+                $.ajax({
+                    url: applicationName +"Ajax/BranchCascading",
+                    async: false,
+                    type: "POST",
+                    data: { id: id },
+                    success: function (data) {
+
+                        var item = '';
+
+                        $.each(data.result, function (i, product) {
+
+                            item += "<option value='" + product.branchId + "'>" + product.branchNameEn + "</option>";
+                        });
+
+                        $("#BranchId").html(item);
+
+                    }
+                });
+
+            });
+
+
+        });
+        function showHideIqamaFields(id) {
+            var id = $('#IdtypeId').val();
+
+            if (id !== "056002") {
+                $("#VisaCode").val('');
+                $("#VisaJob").val('');
+                $("#VisaDate").val('');
+                $("#PassCode").val('');
+                $("#PassPort").val('');
+                $("#PassDate").val('');
+                $("#EmpOfficeLaborCode").val('');
+                $(".dvIqama").hide();
+            } else {
+                $(".dvIqama").show();
+            }
+        };
+        $.validator.setDefaults({
+            submitHandler: function (e) {
+
+                submitForm(e);
+            }
+        });
+        $('#frmEdit').validate({
+            rules: {
+                AdditionalNo: {
+                    maxlength: 10
+                },
+                AddressDetail: {
+                    maxlength: 400
+                },
+                ZipCode: {
+                    maxlength:10
+                },
+                PoBox: {
+                    maxlength:20
+                },
+                CityId: {
+                    maxlength:30
+                },
+                BuildingNo: {
+                    maxlength:20
+                },
+                StreetName: {
+                    maxlength:100
+                },
+                DistrictName: {
+                    maxlength: 100
+                },
+                AppartmentNo: {
+                    maxlength: 10
+                },
+
+                PhoneNo: {
+                    maxlength: 15
+                },
+                HomePhone: {
+                    maxlength: 15
+                },
+                WorkPhone: {
+                    maxlength: 15
+                },
+                WorkPhoneEx: {
+                    maxlength: 10
+                },
+                Fax: {
+                    maxlength: 50
+                },
+                CountryId: {
+                    maxlength:50
+                }
+
+
+            },
+            messages: {
+                AdditionalNo: {
+                    maxlength: "Maximum 10 characters can be enetered"
+                },
+                AddressDetail: {
+                    maxlength: "Maximum 400 characters can be enetered"
+                },
+                ZipCode: {
+                    maxlength: "Maximum 10 characters can be enetered"
+                },
+                PoBox: {
+                    maxlength: "Maximum 20 characters can be enetered"
+                },
+                CityId: {
+                    maxlength: "Maximum 30 characters can be enetered"
+                },
+                BuildingNo: {
+                    maxlength: "Maximum 20 characters can be enetered"
+                },
+                StreetName: {
+                    maxlength: "Maximum 100 characters can be enetered"
+                },
+                DistrictName: {
+                    maxlength: "Maximum 100 characters can be enetered"
+                },
+                AppartmentNo: {
+                    maxlength: "Maximum 10 characters can be enetered"
+                },
+                PhoneNo: {
+                    maxlength: "Maximum 15 characters can be enetered"
+                },
+                HomePhone: {
+                    maxlength: "Maximum 15 characters can be enetered"
+                },
+                WorkPhone: {
+                    maxlength: "Maximum 15 characters can be enetered"
+                },
+                WorkPhoneEx: {
+                    maxlength: "Maximum 10 characters can be enetered"
+                },
+                Fax: {
+                    maxlength: "Maximum 50 characters can be enetered"
+                },
+                CountryId: {
+                    maxlength: "Maximum 50 characters can be enetered"
+                }
+
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+        function submitForm() {
+       // $('#frmEdit').on('submit', function (e) {
+       //     e.preventDefault();
+            var actionType = $('#ACTION_TYPE').val();
+
+            confirmAction('Confirm ?', 'Are you sure you want to save changes ?', 'info', 'Yes', 'No').then(function (result) {
+                if (result.value == true) {
+
+                    var params = $('#frmEdit').serialize();
+                    $.ajax({
+                        url: applicationName + "HumanResource/empaddresses/" + actionType,
+                        async: false,
+                        type: "POST",
+                        data: params,
+                        success: function (data) {
+                            if (data.result.isError != true) {
+                                showMsg('Saved !', 'Record has been saved !', 'success');
+                                setTimeout(function () {
+                                    window.location = applicationName +'HumanResource/empaddresses/emp/@empId';
+
+                                }, 500);
+                            }
+                            else if (data.result.msg != '') {
+                                showMsg('Save Failed !', data.result.msg, 'error');
+                            }
+                            else {
+                                showMsg('Save Failed !', 'Something went wrong. Try again', 'error');
+                            }
+                        }
+                    });
+                }
+            });
+
+
+
+
+        //});
+        }
+        function navigation() {
+            window.location = applicationName +'HumanResource/emp/edit/@empId'
+        };
+        //press enter to change input focus
+        // register jQuery extension
+        jQuery.extend(jQuery.expr[':'], {
+            focusable: function (el, index, selector) {
+                return $(el).is('a, button, :input, [tabindex]');
+            }
+        });
+        $(document).on('keypress', 'input,select', function (e) {
+            if (e.which == 13) {
+                e.preventDefault();
+                // Get all focusable elements on the page
+                var $canfocus = $(':focusable');
+                var index = $canfocus.index(document.activeElement) + 1;
+                if (index >= $canfocus.length) index = 0;
+                $canfocus.eq(index).focus();
+            }
+        });
+        //press enter to change input focus
+    </script>
+
+}

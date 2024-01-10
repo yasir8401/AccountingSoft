@@ -1,0 +1,40 @@
+﻿@using ErpOnClick.ErpMain.Resources
+
+@inject LocService SharedLocalizer
+
+@{
+    string _baseUrl = Convert.ToString(ViewData["baseUrl"]);
+}
+
+@inject LocService SharedLocalizer
+
+
+
+<ul id="js-nav-menu" class="nav-menu">
+
+    <li>
+        <a href="#" title="Category" data-filter-tags="category">
+            <i class="fal fa-inbox"></i>
+            <span class="nav-link-text" data-i18n="nav.hr"> @SharedLocalizer.GetLocalizedHtmlString("Inventory")</span>
+        </a>
+        <ul>
+            <li><a href="~/Inventory/Items" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Item's")</span></a></li>
+            <li><a href="~/Inventory/ItemCategories" data-filter-tags="utilities menu child"><span class="nav-link-text" data-i18n="nav.utilities_menu_child">@SharedLocalizer.GetLocalizedHtmlString("Item Categories")</span></a></li>
+        </ul>
+    </li>
+
+    <li class="active">
+        <a href="~/home/Index" title="Category" data-filter-tags="category">
+            <i class="fal fa-arrow-left"></i>
+            <span class="nav-link-text" data-i18n="nav.hr"> @SharedLocalizer.GetLocalizedHtmlString("Return")</span>
+        </a>
+    </li>
+
+    <li class="active ">
+        <a href="~/home/logout" title="Category" data-filter-tags="category">
+            <i class=" fal fa-sign-out"></i>
+            <span class="nav-link-text" data-i18n="nav.category">  @SharedLocalizer.GetLocalizedHtmlString("Logout")</span>
+        </a>
+    </li>
+
+</ul>

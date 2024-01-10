@@ -1,0 +1,65 @@
+﻿@using ErpOnClick.ErpMain.Resources
+@inject LocService SharedLocalizer
+
+
+<nav class="mt-2">
+    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
+        <li class="nav-item has-treeview menu-open">
+            <a href="@Url.Content("~")PMSDashboard" class="nav-link ">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                    @SharedLocalizer.GetLocalizedHtmlString("Dashboard")
+                </p>
+            </a>
+        </li>
+
+
+        <li class="nav-item has-treeview menu-open">
+            <a href="#" class="nav-link ">
+                <i class="nav-icon fas fa-home"></i>
+                <p>
+                    @SharedLocalizer.GetLocalizedHtmlString("Home")
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item"><a href="~/PMS/PMSProjects" class="nav-link "><p>@SharedLocalizer.GetLocalizedHtmlString("Projects")</p></a></li>
+                <li class="nav-item"><a href="~/PMS/PMSUsers" class="nav-link "><p>@SharedLocalizer.GetLocalizedHtmlString("Users")</p></a></li>
+                <li class="nav-item"><a href="~/PMS/PMSProjectTasks" class="nav-link "><p>@SharedLocalizer.GetLocalizedHtmlString("Tasks")</p></a></li>
+                @*<li class="nav-item"><a href="~/ESS/EmpLeaves" class="nav-link "><p>@SharedLocalizer.GetLocalizedHtmlString("Leaves Details")</p></a></li>*@
+            </ul>
+        </li>
+        <li class="nav-item has-treeview menu-open">
+            <a href="~/PMS/PMSInbox" class="nav-link ">
+                <i class="nav-icon fas fa-comment-alt"></i>
+                <p>
+                    @SharedLocalizer.GetLocalizedHtmlString("Inbox")
+                </p>
+            </a>
+        </li>
+        <li class="nav-item has-treeview ">
+            <a href="~/home/Index" class="nav-link">
+                <i class="nav-icon fas fa-sign-out-alt"></i>
+                <p>
+                    @SharedLocalizer.GetLocalizedHtmlString("Return")
+
+                </p>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+<nav class="mt-2">
+    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
+
+        <li class="nav-item has-treeview ">
+            <a href="~/home/logout" class="nav-link">
+                <i class="nav-icon fas fa-sign-out-alt"></i>
+                <p>
+                    @SharedLocalizer.GetLocalizedHtmlString("Logout")
+
+                </p>
+            </a>
+        </li>
+    </ul>
+</nav>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\inetpub\wwwroot\ErpOnClick</_PublishTargetUrl>
+    <History>True|2021-10-16T17:45:31.9079001Z;True|2021-10-16T20:41:40.0741802+03:00;True|2021-10-16T20:04:54.2503040+03:00;True|2021-10-16T19:51:24.4767303+03:00;True|2021-10-12T22:45:08.7968446+03:00;True|2021-10-12T22:35:50.0237302+03:00;True|2021-10-11T21:44:22.0672686+03:00;True|2021-10-10T00:06:13.3743594+03:00;True|2021-10-07T02:23:59.2640138+03:00;True|2021-10-05T01:01:37.3369392+03:00;True|2021-10-04T00:53:05.3706060+03:00;True|2021-10-04T00:42:53.1729366+03:00;True|2021-10-03T22:15:38.9294774+03:00;True|2021-09-23T16:48:11.6812640+03:00;True|2021-09-23T16:34:20.2487500+03:00;True|2021-09-18T23:29:04.9490478+03:00;True|2021-09-18T01:36:43.1978149+03:00;True|2021-09-18T01:12:33.5792420+03:00;True|2021-09-17T15:17:13.1630273+03:00;</History>
+  </PropertyGroup>
+</Project>
